@@ -1,1425 +1,1496 @@
 ---
-## Hello
+## Stately State Machines With Ragel
 
-Include images from "images" folder
+![](images/babbage.jpg)
 
-![](images/magic.gif)
+RubyConf 2015
 
----
-<h2>Want to write HTML?</h2>
-
-<p>yes, yes you can :)</p>
-
-<img src="images/magic.gif">
-
----
-## Speaker notes
-
-Hit `s` on your keyboard to display speaker notes
+Ian Duggan
 
 Note:
-Here are the secret speaker notes!
-
-Use `--such-notes` if they deserve better treatment.
-
----
-$background:#FF69B4$
-
-## Slide properties
-
-Look at this shiny `hot-pink` background!
-
-It has been added on this slide with this `$` syntax:
-
-```
-$background:#FF69B4$
-```
-
----
-## Goodbye
-
-Don't hesitate to give us feedback about [prez on GitHub](https://github.com/lmtm/prez)!
-
-Thanks
-
----
-## Stately State Machines With Ragel
-
-![](images/state_machine.jpg)
-
----
-## Stately State Machines With Ragel
-
 Joke: Statistician and Mathematician — please analyze this number — it’s two. Statistician: somewhere between 1.99999999 and 2.00000001 but we can’t be sure. Engineer: 2? It’s 2? Ok, well, we should make it 3. No, you know what? Let’s make it 4 just to be safe.
 
 ---
-Hi, my name is Ian Duggan
+<br>
+## Goals for This Talk
 
----
-I'm here to talk to you today about this incredible tool, Ragel.
+1. Convince you that Ragel is worth trying.
 
----
-But first, a bit about myself.
-  (picture of me)
+1. Give you some intuition about how it works.
 
----
-I like to play hockey. Several times a week.
-  (picture of hockey)
-
----
-I noodle around on the guitar, banjo, and mandolin. I'm trying to learn the fiddle. Trying...
-  (picture of instruments?)
-
----
-I also enjoy flying my little Cessna 120 on the weekends.
-  (picture of the 120)
-
----
-I'm a software engineer. I code things. I use the internets and the googles.
-  (picture of software engineer, maybe Dilbert?)
-
----
-I'm also a recovering technology entrepreneur. I've been in and out of startup institutions my entire life.
-  (crazy picture of a startup)
-
----
-I currently work at Twitch
-  (picture of Twitch logo, maybe some streaming)
-
----
-Of course we're hiring... we have lots of Ruby On Rails and more recently, lots of Go.
-  (picture of a Ruby)
-  (picture of the Gopher)
-
-Actually, we're not hiring. We have too many engineers. Do you want any? We have too many. Please, take some.
-
----
-I've been using Ruby casually since the 1.6 days, and professionally for more than a decade. I forget when the transition exactly happened, but one day I just found myself using Ruby for everything. It's a very nice language.
+1. Show you how to setup a basic parser.
 
 
 ---
-However, today I'm here to talk to you today about another incredible tool, Ragel. It's amazing. It can do almost anything. Well, almost anything. Actually, anything related to parsing text. You can get a few more tricks out of it but that's the main use case.
+## Hello
+
+My name is Ian Duggan
+
+![](images/ian_carrot.jpg)
 
 ---
-What's that you say? Parsing text? Parsing text is easy. You just use regular expressions, right?
+## I Play Hockey
 
-  (find a really ugly picture of regular expressions)
+Several times a week.
 
----
-Those work fine. Why do we need something better?
-  
-  (find a REALLY ugly picture of a regular expression)
+![](images/stormy_the_pig.jpg)
 
----
-Let's examine them.
+Note:
+This is Stormy the pig. In North Carolina, where I'm from, pigs apparently mean hockey.
 
 ---
-Formally
+## I Play Guitar
 
-    https://en.wikipedia.org/wiki/Regular_expression
+And banjo. And mandolin. And ukulele. Poorly. I have a fiddle that's gathering dust.
 
-   "Regular expressions consist of constants and operator symbols that denote sets of strings and operations over these sets, respectively."
-   (empty set) ∅ denoting the set ∅.
-   (empty string) ε denoting the set containing only the "empty" string, which has no characters at all.
-   (literal character) a in Σ denoting the set containing only the character a.
-   (concatenation) RS denotes the set of strings that can be obtained by concatenating a string in R and a string in S.
-   (alternation) R | S denotes the set union of sets described by R and S.
-   (Kleene star) R* denotes the smallest superset of set described by R that contains ε and is closed under string concatenation.
+![](images/musical_instruments.jpg)
+
+Note:
+My cats are happy that it's gathering dust.
 
 ---
-Less Formally
+## Sometimes I Fly
 
-   Match
-   "a" - match "a"
+![](images/cessna120.jpg)
 
-   Boolean AND
-   "abc" - match "a", then "b", then "c"
+Note:
 
-   Boolean OR
-   "a" | "b" - match "a" or "b" (boolean OR)
+This is my little Cessna 120 that I fly out of Hayward, CA. It has a whopping 85 horses, but it's fun to putt-putt around the bay and valley in.
+---
+## I Love My Cats
 
-   Grouping for Precedence
-   gr(a|e)y - match "gr", then "a" or "e", then "y"
+![](images/boofus_cozy1.jpg)
 
-   Quantification
-   a? - match zero or one "a"
-   a* - match zero or more "a"
-   a+ - match one or more "a"
-   a{18} - match "a" 18 times
-   a{2,} - match "a" 2 or more times
-   a{2,10} - match "a" between 2 and 10 more times
+Note:
+This is Purrington. Most of the time we call him Boofus. It just seems more fitting.
+
+---
+## They Are Goofballs
+
+![](images/minnie_antlers.jpg)
+
+Note:
+This is Meowington. She usally goes by "Minnie" or "Minnie-Moo". She'll sit for hours in these outfits. She doesn't care. She likes the attention. She also moos at us a lot. She's quite talkative.
+---
+## But Very Furry
+
+![](images/boofus_cozy2.jpg)
+
+Note:
+Boofus likes being cozy.
+---
+## And Dopey
+
+![](images/minnie_hoodie.jpg)
+
+Note:
+
+---
+## And Relaxed
+
+![](images/boofus_relaxed.jpg)
+
+Note:
+Boofus is more chill.
+---
+## And Fun
+
+![](images/minnie_bucket.jpg)
+
+Note:
+Minnie likes to sit in strange places.
+
+---
+## Software! FTW!
+
+I'm a software dude. I code things. I code the internets and the
+googles. I'm also a recovering technology entrepreneur. I've been in
+and out of startup institutions my entire life.
+
+![](images/software_eng.jpg)
+
+---
+## Current Status
+
+![](images/twitch.jpg)
+
+---
+## We're Hiring (of course)
+
+Lots of Ruby.
+
+![](images/ruby.png)
+
+---
+## We're Hiring (of course)
+
+Lots of Go.
+
+![](images/gopher.jpg)
+
+---
+## I'm a Rubyist, since 1.6
+
+I've been using Ruby casually since the 1.6 days, and professionally
+for more than a decade.
+
+![](images/ruby_16.jpg)
+
+Note:
+
+I forget when the transition exactly happened,
+but one day I just found myself using Ruby for everything. It's a very
+nice language.
+
+---
+<br>
+## Today is About Ragel
+
+![](images/ragel.png)
+
+Note:
+
+However, today I'm here to talk to you today about another incredible
+tool, Ragel.
+
+It's amazing. It can do almost anything.
+
+Well, almost anything.
+
+Actually, nearly anything related to parsing text.
+
+You can get a few more tricks out of it but that's the main use case.
+
+---
+## Ragel Is Really Cool
+
+If you don't have it in your bat-belt yet, you need to add it. Today!
+
+![](images/adam_west_batman.jpg)
+
+Note:
+Ragel excels at ripping-fast parsing and processing of textual data.
+
+---
+## Ruby projects using Ragel
+
+* Mongrel, Unicorn, Puma
+* Whitequark 
+* Mail
+* RedCloth
+* Hpricot
+* Gherkin
+
+---
+# What Does Ragel Look Like
+
+```
+action dgt      { printf("DGT: %c\n", fc); }
+action dec      { printf("DEC: .\n"); }
+action exp      { printf("EXP: %c\n", fc); }
+action exp_sign { printf("SGN: %c\n", fc); }
+action number   { /*NUMBER*/ }
+
+number = (
+    [0-9]+ $dgt ( '.' @dec [0-9]+ $dgt )?
+    ( [eE] ( [+\-] $exp_sign )? [0-9]+ $exp )?
+) %number;
+
+main := ( number '\n' )*;
+```
 
 
 ---
-You can get by with them. You can especially get by with them in Ruby which draws it's heritage from Perl, Sed, and Awk which made wonderful use of regexps.
+## But Regular Expressions are easy!
+
+zarro boogs found
+
+![](images/regular_expression.jpg)
+
+Note:
+
+What's that you say? Parsing text?
+
+Parsing text is easy.
+
+You just use regular expressions, right?
+
+Simple. No problem.
+
+They have their place, but you can reach for something better.
 
 ---
-Perl
- (show some perl)
+## Regular Expressions
+
+Regular expressions consist of constants and operator symbols that denote sets of strings and operations over these sets, respectively. (from Wikipedia)
+
+```
+   /a/         # match a
+   /abc/       # match "a", then "b", then "c" (concatenation)
+   /a|b/       # match "a" or "b" (alteration)
+   /gr(a|e)y/  # match "gr", then "a" or "e", then "y" (grouping)
+   /a?/        # match zero or one "a"
+   /a*/        # match zero or more "a"
+   /a+/        # match one or more "a"
+   /a{18}/     # match "a" 18 times
+   /a{2,}/     # match "a" 2 or more times
+   /a{2,10}/   # match "a" between 2 and 10 more times
+```
+
+Note:
+Most people should be familiar with the standard regexp form.
 
 ---
-Sed
- (show some sed)
+## Ruby has great tools for regular expressions
+
+You can get by with them. You can especially get by with them in Ruby which draws its heritage from Perl, Sed, and Awk which made wonderful use of regexps.
+
+```
+@dot = @dot.gsub(/^.*->.*$/) do |line|
+  line.gsub(/label = ".*"/) do |labels|
+    labels.gsub(/\b\d+/) { |num| ASCII_MAP[num] || num }
+  end
+end
+```
 
 ---
-Awk
- (show some awk)
+## Sometimes You Want More Control
+
+I posit that this might be some sort of automaton.
+
+![](images/automaton.jpg)
+
+Note:
+Regepx work fine. Why do we need something better?
 
 ---
-But we're Rubyists.
+<br>
+## Finite Automata
+
+* Have states and transitions.
+
+* Change state based on sequence of inputs.
+
+* **DFA** can be in only one state at a time.
+
+* **NFA** can be in more than one state at a time.
+
+Note:
+
+But, we can convert an NFA into a DFA by making "super states" from these dual states. This grows combinatorically, of course.
 
 ---
-We like Ruby. (normal)
+## Equivalence of Regular Expressions, NFAs, and DFAs
+
+> It is possible to convert freely between regular expressions,
+> deterministic finite automata, and nondeterministic finite
+> automata. Given one, we can convert it to any of the other forms.
+
+http://faculty.ycp.edu/~dhovemey/fall2008/cs340/notes/lecture3.html
 
 ---
-We love Ruby. (bigger)
+<br>
+## These Are All State Machines
 
----
-We heart Ruby. (biggest)
+<br>
 
----
-Ttenderly. (huge, with a heart)
-
----
-(show picture of patterson?)
-
----
-Ruby has great tools for regular expressions.
-  (show simple matching)
-  (ruby gsub block trick)
-
----
-We don't need anything more. We don't need no stinkin' state machines!
-  (picture of a donkey doing the teeth thing)
-
----
-Deterministic Finite Automaton (DFA)
-  Can be in only one state at a time.
-
----
-Nondeterministic Finite Automaton (NFA)
-  Can be in more than one state at a time.
-  But, we can convert this into a DFA but making "super states" from these dual states. This grows combinatorically, of course.
-
----
-Equivalence of Regular Expressions, NFAs, and DFAs
-
-  "It is possible to convert freely between regular expressions,
-  deterministic finite automata, and nondeterministic finite
-  automata. Given one, we can convert it to any of the other forms"
-  
-  http://faculty.ycp.edu/~dhovemey/fall2008/cs340/notes/lecture3.html
-
----
-What's a state machine you ask?
-
----
 State machines are an important tool in computer programming, and Ragel is a wonderful tool for creating them.
 
 ---
-State machines are everywhere.
+## State machines are everywhere
+
+![](images/state_machines_everywhere.png)
 
 ---
-They're in your stoplight.
-  (show stoplight state machine)
+<br>
+## They're in your stoplight
+
+<br>
+![](images/stoplight.gif)
 
 ---
-They run your CPU.
-  (find a picture of a register machine?)
+## They run your CPU
+
+![](images/cpu_machine.png)
+
+Note:
+
+Every tick of your CPU advancing a state machine from one state to
+another...
+
+Take all of the bits in your computer and label each combination as a state.
+
+Take all of the input bits and label those as different inputs.
+
+That's a big horkin' state machine.
 
 ---
-Every tick of your CPU advancing a state machine from one state to another. Take all of the bits in your computer and label each combination as a state. Take all of the input bits and label those as different inputs. That's a big horkin' state machine.
+<br>
+## There are examples everywhere
+
+* watch with timer
+* vending machine
+* traffic light
+* bar code scanner
+* gas pumps
+* number classification
 
 ---
-There are examples everywhere:
+<br>
+# The Cat's Meow?
 
-  number classification
-  watch with timer
-  vending machine
-  traffic light
-  bar code scanner
-  gas pumps
-
----
 State machines are great for many reasons. They are simple to understand, and there has been a great deal of research around finite automata and state machines. With the right approach they can also produce code that is faster, easier to maintain, and more correct and thus more secure.
 
 ---
+<br><br>
+# Still Not Convinced?
+
 Rather than me trying to convince you that they're useful, let's just talk about them for a bit and see where we end up.
 
 ---
-Let's go over some vocabulary.
+<br><br>
+# Let's go over some vocabulary
 
 ---
-Start state.
-  This is the initial state of a mchine.
-  (S0)
+<br>
+# Start state
+
+This is the initial state of a machine.
+
+(S0)
 
 ---
-Accept state.
-  In this state, the machine is said to have "accepted" the input.
-  (double circle)  
+# Accept state
+
+In this state, the machine is said to have "accepted" the input.
+
+(double circle)
+
+![](images/accept_state.png)
 
 ---
-Transition.
-  Upon consuming a single character, the machine can move from one state to another.
-  (labelled arrow)
+# Transition
+
+Upon consuming a single character, the machine can move from one state to another.
+
+(labelled arrow)
+
+![](images/transition_arrow.png)
 
 ---
-Epsilon Transition
-  Allows an automaton to change its state spontaneously, i.e. without consuming an input symbol
-  These can be used to wire machines together. Composition. Computer science.
-  (show an epsilon)
+# Epsilon Transition
+
+Allows an automaton to change its state spontaneously, i.e. without
+consuming an input symbol.
+
+![](images/epsilon_transition.png)
+
+Note:
+These can be used to wire machines together.
+
+Composition.
+
+Computer science.
 
 ---
-One state machines.
-  (a)
-  (a*)
-  (a+)
+# Simple Machines
+
+  'a', 'a'*, 'a'+
+
+![](images/simple_machines.png)
 
 ---
-Two state machines.
+# More Complex
 
-  Two states, we start to get useful. (make an oscillator - light on
-  and off, w/ a counter for timing — this is how we have memory in the
-  network — sort of like markov chains w/ memory)
-  
-  (oscillator)
+'hello'*
 
----
-And we can add more states to get somewhere useful.
-  Zero or more hellos
-  (hello)*
+Zero or more hellos.
+
+![](images/hello_star.png)
 
 ---
-But we're here to talk about Ragel, specifically, so it must have something to do with all of this.
+<br><br><br>
+# What's the Big Deal?
+
+These just look like regular expressions.
+
+Note:
+They are, more or less.
+
+However, Ragel has a few more tricks up it's sleeve.
+
+We're going to compose these simple machines.
+
+And execute arbitrary actions at any point inside them.
+
+That is when things get really cool.
 
 ---
-What is Ragel?
+## What is Ragel Exactly?
 
-  https://en.wikipedia.org/wiki/Ragel
+> Ragel is a finite-state machine compiler with output support for C,
+> C++, C#, Objective-C, D, Java, OCaml, Go, and Ruby source code.
+> It supports the generation of table or control flow driven state
+> machines from regular expressions and/or state charts and can
+> also build lexical analysers via the longest-match method. Ragel
+> specifically targets text parsing and input validation.
 
-  "Ragel is a finite-state machine compiler with output support for C,
-  C++, C#, Objective-C, D, Java, OCaml, Go, and Ruby source code.
-  It supports the generation of table or control flow driven state
-  machines from regular expressions and/or state charts and can
-  also build lexical analysers via the longest-match method. Ragel
-  specifically targets text parsing and input validation."
-
-  "Ragel supports the generation of table or control flow driven state
-  machines from regular expressions and/or state charts and can also
-  build lexical analysers via the longest-match method. A unique feature
-  of Ragel is that user actions can be associated with arbitrary state
-  machine transitions using operators that are integrated into the
-  regular expressions. Ragel also supports visualization of the
-  generated machine via graphviz."
-
+https://en.wikipedia.org/wiki/Ragel
 
 ---
-Let's talk about pronounciation (pro-nouns-key-ay-shun) for a sec.
+## State Machine Generation
+
+> Ragel supports the generation of table or control flow driven state
+> machines from regular expressions and/or state charts and can also
+> build lexical analysers via the longest-match method. A unique feature
+> of Ragel is that user actions can be associated with arbitrary state
+> machine transitions using operators that are integrated into the
+> regular expressions. Ragel also supports visualization of the
+> generated machine via graphviz.
+
+https://en.wikipedia.org/wiki/Ragel
 
 ---
-Is it RAY-gull or RAU-jul or RAH-gull, or RAH-jul?
+<br>
+## How Do You Pronounce It?
+
+* RAY-gull?
+* RAY-jul?
+* RAH-gull?
+* RAH-jul?
+
+Note:
+(pro-nouns-key-ay-shun) 
 
 ---
-Let's get it from the horse's mouth.
+<br>
+## Let's get it from the horse's mouth
 
-  (picture of a horse's mouth)
+![](images/horses_mouth.jpg)
 
 ---
+## Adrian D. Thurston Created Ragel
+
+https://www.mail-archive.com/ragel-users@complang.org/msg00344.html
+
+```
 Re: [ragel-users] pronounciation
+Adrian Thurston Sat, 10 Apr 2010 09:02:10 -0700
 
-    Re: [ragel-users] pronounciation
-    Adrian Thurston Sat, 10 Apr 2010 09:02:10 -0700
+Hi Landon,
 
-    Hi Landon,
+I usually say something like "rah-ghel." I had no
+phonetic basis for it when I picked it. I just took my nickname
+"Age" and wrapped it in the R and L of regular languages. I've
+since learned that it means "man" in Arabic.
 
-    I usually say something like "rah-ghel." I had no
-    phonetic basis for it when I picked it. I just took my nickname
-    "Age" and wrapped it in the R and L of regular languages. I've
-    since learned that it means "man" in Arabic.
+Adrian
 
-    Adrian
-
-    Landon Cox wrote:
-    > Hi Adrian and others,
-    >
-    > Simple question:  What is the pronunciation of "Ragel"?
-    > 
-    > Is it "Ray-Gull" or "Rag-El" (like dish rag) or "Rage-El" ?
-    >
-    > Thanks,
-    > 
-    > Landon
-
-    https://www.mail-archive.com/ragel-users@complang.org/msg00344.html
+Landon Cox wrote:
+> Hi Adrian and others,
+>
+> Simple question:  What is the pronunciation of "Ragel"?
+> 
+> Is it "Ray-Gull" or "Rag-El" (like dish rag) or "Rage-El" ?
+>
+> Thanks,
+> 
+> Landon
+```
 
 ---
-Well, darn. I've been pronouncing it wrong for quite some time!
+<br>
+# Well, darn. I've been pronouncing it wrong for quite some time!
+
+Note:
+
+For too long, actually. I'm not sure if I'll be able to change. I will if you do.
 
 ---
-Ragel is a DSL for creating state machines.
+<br>
+## Ragel is a DSL for creating state machines
 
----
 It is espcially useful for parsing protocols and data formats. (HTTP, XML, JSON, CSS, etc...)
 
----
-From a high-level, it helps you build regular expressions, but with an
-important difference. With Ragel, you have the ability to stop at any
-point in the regexp parse and execute code in the host language. This
-is incredibly powerful. It means that rather than having a large
-program with lots of regexps, loops, and conditionals, we can have one
-BNF-ish looking definition that, instead, calls out to our code when
-we need it to. You can do some really cool tricks with this.
+Note:
+
+From a high-level, it helps you build regular expressions, but with an important difference.
+
+With Ragel, you have the ability to stop at any point in the regexp parse and execute code in the host language.
+
+This is incredibly powerful.
+
+It means that rather than having a large program with lots of regexps, loops, and conditionals, we can have one
+EBNF-ish looking definition that, instead, calls out to our code when we need it to.
+
+You can do some really cool tricks with this.
 
 ---
-Let's look at the DSL.
+<br><br><br>
+# Let's look at the DSL
 
 ---
-Actions.
->name - starting
-%name - leaving
-$name - all transitions
-@name - finishing
+<br>
+## General Structure of a Ragel File
 
----
-You can do a lot in an action. Actions are written in the host language.
-* explicitly change the current state
-* push current state to a stack and jump to another state
-* exit the parser
-* google a matched link, take the first page, download a video from it, upload it to youtube
-
-
----
-String extraction
-* >mark - mark the beginning a pattern
-* %emit - save the currently matched pattern
-
----
-It's possible to have a single Ragel definition that uses import semantics to allow implementing the actions in different languages using the same parent Ragel file
-  (link to Mongrel)
-  https://github.com/taf2/mongrel/tree/master/ext/http11
-
-
----
-It's also possible to prototype in Ruby, then convert it to a C module for super speed. Ragel supports several output formats so you can do this port rather easily.
-  (see Zed Shaw's http11 for an example of how to do this)
-  https://github.com/taf2/mongrel/tree/master/ext/http11
-
----
-General Structure of a Ragel File
-* mostly in the host language
+* Mostly in the host language
+* has a .rl extension (simple.rl)
 * %% is used for inline statements
 * %%{ is used for multiline statements }%%
 
+```
+%%{
+  machine foobar;
+  main := 'foobar';
+}%%
 
----
-Several host languages are available.
-
-    host language:
-       -C                   The host language is C, C++, Obj-C or Obj-C++ (default)
-       -D                   The host language is D
-       -Z                   The host language is Go
-       -J                   The host language is Java
-       -R                   The host language is Ruby
-       -A                   The host language is C#
-       -O                   The host language is OCaml
-
----
-Minimal Ragel File
-* Has a .rl extension (simple.rl)
-
-   %%{
-     machine simple;
-     main := 'simple';
-   }%%
-
-
----
-that defines the basic machine. Ragel will use this to compute the set of states and transitions. It will then use those to generate code in a number of different styes:
-
-    code style: (C/D/Java/Ruby/C#/OCaml)
-       -T0                  Table driven FSM (default)
-       
-    code style: (C/D/Ruby/C#/OCaml)
-       -T1                  Faster table driven FSM
-       -F0                  Flat table driven FSM
-       -F1                  Faster flat table-driven FSM
-       
-    code style: (C/D/C#/OCaml)
-       -G0                  Goto-driven FSM
-       -G1                  Faster goto-driven FSM
-       
-    code style: (C/D)
-       -G2                  Really fast goto-driven FSM
-       -P<N>                N-Way Split really fast goto-driven FSM
-
----
-Each of these has different visual organization and performance
-characteristics. In languages like C, this can boil down to
-heavily-optimized GOTO statements in a single while loop. It's fast
-and cpu-cache friendly.
-
-    (pull open a ruby file and get an idea of what this looks like)
-
----
-There are three main directives that do the bulk of the work.
-
-  %%write init;    (initializes the data buffer and sets the current state)
-
-  %%write data;    (writes out definitions of the state and transition data)
-
-  %%write exec;    (writes out the code that processes the data buffer using the state and transition data)
-
----
-%%write data;
-
-  class << self
-  	attr_accessor :_hello_key_offsets
-  	private :_hello_key_offsets, :_hello_key_offsets=
-  end
-  self._hello_key_offsets = [
-  	0, 0, 1, 2, 3, 4
-  ]
-
-  class << self
-  	attr_accessor :_hello_trans_keys
-  	private :_hello_trans_keys, :_hello_trans_keys=
-  end
-  self._hello_trans_keys = [
-  	101, 108, 108, 111, 104, 0
-  ]
-  # LOTS MORE LIKE THIS
-  # ...
-  # ...    
-
----
 %%write init;
-
-  begin
-    p ||= 0
-    pe ||= data.length
-    cs = simple_start
-    top = 0
-  end
-
----
 %%write exec;
-
-   begin
-   	_klen, _trans, _keys = nil
-   	_goto_level = 0
-   	_resume = 10
-   	_eof_trans = 15
-   	_again = 20
-   	_test_eof = 30
-   	_out = 40
-   	while true
-   	_trigger_goto = false
-   	if _goto_level <= 0
-    # LOTS MORE LIKE THIS
-    # ...
-    # ...    
-  end
+```
 
 ---
-Basic Machines
-We'll next go into some very basic state machines with diagrams and examples of the Ragel syntax used to create them. 
+## Naming a Machine
+
+With named machines, you can spread a machine's statements across several files or include common sections.
+
+```
+    machine phone_parser;
+```
 
 ---
-Naming a Machine
+## Machine Definition
 
-  machine phone_parser;
+You define a machine using the equals operator.
 
-  A machine’s statements can be spread across multiple machine
-  specifications. This allows one to break up a machine across several
-  files or draw in statements that are common to multiple machines
-  using the include statement.
+```
+    <name> = <expression>;
+```
+
+This allows it to be referenced later.
+
+Note:
+The machine definition statement associates an FSM expression with a name.
+
+Machine expressions assigned to names can later be referenced in other expressions.
+
+A definition statement on its own does not cause any states to be generated.
+
+It is simply a description of a machine to be used later.
+
+States are generated only when a definition is instantiated, which happens when a definition is referenced in an instantiated expression.
+
 
 ---
-Machine Definition
+## Machine Instantiation
 
-  <name> = <expression>;
+This causes the actual generation of the referenced set of states.
 
----
-Machine Instantiation
-
+```
   <name> := <expression>;
+```
+
+Each instantiation generates a distinct set of states. 
+
+Note:
+
+Starting state written to the data section.
+
+If main used, it is set as the start state.
+
+If not, the last machine instantiated has the start state.
 
 ---
-File Inclusion
+## File Inclusion and Import
 
-  include FsmName "inputfile.rl";
+You can include and import definitions from other files.
 
----
-Import Definitions
+```
+    include FsmName "inputfile.rl";
 
-  import "inputfile.h";
+    import "inputfile.h";
+```
 
-  The import statement scrapes a file for sequences of tokens that match the following forms.
-  Ragel treats these forms as state machine definitions.
-  • name ’=’ number
-  • name ’=’ lit_string
-  • ’define’ name number
-  • ’define’ name lit_string
+These can help you keep things organized. See the manual for the specific semantics of each.
 
 ---
-Building Up Basic Matchers
+# Comments
 
+```
   # is used for single line comments
+```  
 
 ---
-Literals
+# Literals
 
-  "", '', //, []
+Literals are contained in quotes, regexp slashes, or brackets for groupings.
 
----
-Escape Characters
-
-  \0 \a \b \t \n \v \f \r
-
-  You can escape the end of a line with a \ (as in shell scripting)
-
----
-Host Language Code
-
-  {} delimit host language code
+```
+  ""    # string
+  ''    # string
+  //    # regexp
+  []    # union
+```
 
 ---
-Numbers
+# Escape Characters
 
-  [+-]?[0-9]+      integers used for specifying machine states
-  0x[0-9A-fa-f]    hexadecimals
+```
+  \0    null
+  \a    
+  \b    backspace
+  \t    tab
+  \n    newline
+  \v    vtab
+  \f    formfeed
+  \r    carriage return
+```
+
+You can escape the end of a line with a \ (as in shell scripting)
 
 ---
-Keywords
+# Host Language Code
 
-  access
-  actionalphtype
-  getkey
-  write
-  machine
-  include
+Braces are used to delimit host language code in %%{ }%% sections
+
+
+```
+   { puts "I am ruby" }    
+```  
 
 ---
-Whitespace
+# Numbers
+
+Integers and hexadecimals can be used to refer to numbers.
+
+```
+    [+-]?[0-9]+            # integers    (-23432, +23423, 23423)
+    0x[0-9A-fa-f]          # hexadecimal (0xABD)
+```  
+
+---
+# Keywords
+
+```
+    access
+    actionalphtype
+    getkey
+    write
+    machine
+    include
+```    
+
+---
+<br>
+# Whitespace
 
   Any amount of whitespace can separate tokens.
 
 ---
-Basic Machines
+# Concatenation Literal
 
-  'simple' - Concatenation literal. Produces a machine that matches the sequence of characters. 6 letters. 7 states include the start state.
+Both of these produce a match on a sequence of letters.
 
-  "simple" - same thing
+```
+%%{
+  machine simple;
+  main := 'simple';
+}%%
+```
   
-  (picture of machine)
+![](images/simple_concat.png)
 
 ---
-Union Expression
+# Union Expression
 
-  [abc] - Produces a union of characters.
-  [acm-z] - Ranges are allowed
+```
+%%{
+  machine union_range;
+  union := [abc];
+  union_range := [acm-z];
+}%%
+```
 
----
-Zero Length Machine
-
-  ''
-  ""
-  []
-
----
-Numerical Literal
-
-  42 - Produces a two-state machine with one transition on the given value, which can be given in decimal or hexadecimal.
+![](images/union_range.png)
 
 ---
-Regular Expression
+# Zero Length Machines
 
-  /fooba[rz]/ - prased as a series of expression concatenated together.
-  . (any)
-  a* - repetition
-  a+ - repetition
-  [^abc] - negation
-  /FOO/i - case insensitive
+```
+%%{
+  machine zero_length_machines;
+  single := '';
+  double := "";
+  bracket := [];
+}%%
+```
 
----
-Regular Expression (more complex)
-
-  /ab*[c-z].*[123]/
-
-  You don't need fancy regexps because the great Ragel engine allows you to do whatever you would need here. How many turtles do you need?
+![](images/zero_length_machine2.png)
 
 ---
-Range Expression
+# Numerical Literal
 
-  'a'..'z' - produces a machine that matches characters in the range
+Produces a two-state machine with one transition on the given value, which can be given in decimal or hexadecimal.
 
----
-Variable Name
+```
+%%{
+  machine numerical_literal;
+  main := 42;
+}%%
+```
 
-  secret_code - lookup the machine named by this and use an instance of it.
-
----
-Builtin Machines
-
-  any – Any character in the alphabet.
-  ascii – Ascii characters. 0..127
-  extend – Ascii extended characters. This is the range -128..127 for signed alphabets and the range 0..255 for unsigned alphabets.
-  alpha – Alphabetic characters. [A-Za-z]
-  digit - Digits. [0-9]
-  alnum – Alpha numerics. [0-9A-Za-z]
-  lower – Lowercase characters. [a-z]
-  upper – Uppercase characters. [A-Z]
-  xdigit - Hexadecimal digits. [0-9A-Fa-f]
-  cntrl – Control characters. 0..31
-  graph – Graphical characters. [!-~]
-  print – Printable characters. [ -~]
-  punct – Punctuation. Graphical characters that are not alphanumerics. [!-/:-@[-‘{-~]
-  space - Whitespace. [\t\v\f\n\r ]
-  zlen - Zero length string. ""
-  empty - Empty set. Matches nothing. ^any
+![](images/numeric_literal.png)
 
 ---
-Simple Machines
-  - Ok. At this point you are a caveman (or cave woman).
-  - You have some simple machines (lever, inclined plane, wedge, pulley, wheel and axle, screw)
-  - But we don't have to stop there. We're not cave people. We're going to combine these basic machines into better machines so we can travel to the moon
+# Regular Expression
+
+```
+%%{
+  machine regexp2;
+  main := /ab*[c-z].*[123]/;
+}%%
+```  
+
+![](images/regular_expression.png)
+
+Note:
+You don't need fancy regexps because the great Ragel engine allows you to do whatever you would need here.
+
+How many turtles do you need?
 
 ---
-Composition
-  - We're computer scientists.
-  - We develop basic building blocks.
-  - Then we add for loops and arrays to turn them into monstrosities.
-  - Let's see how to do that.
+# Range Expression
+
+Matches 
+
+```
+%%{
+  machine range;
+  main := 'a'..'z';
+}%%
+```    
+
+![](images/range_expression.png)
 
 ---
-Regular Language Operators
-  - This is the part of Ragel that I found fascinating when I first grokked it.
-  - Ragel's DSL allows you to take these simple machines, and through some basic operators, combine those into bigger machines, and then combine those into BIGGER machines. Keep going util you have RubyOnRails.
-  - This compositional technique is what gives Ragel it's extreme simplicity and combinational power. I can't stress this point enough.
+# Variable Name
+
+Inserts the machine referenced by this name.
+
+```
+%%{
+  machine variable_name;
+  secret_code = [0-9]{2};
+  main := secret_code;
+}%%
+```    
+
+![](images/variable_name.png)
 
 ---
-Ragel's Voodoo
+## Builtin Machines
 
-  "To create an epsilon transition between two states x and y is to
-  copy all of the properties of y into x. This involves drawing in all
-  of y’s to-state actions, EOF actions, etc., in addition to its
-  transitions. If x and y both have a transition out on the same
-  character, then the transitions must be combined. During transition
-  combination a new transition is made that goes to a new state that
-  is the combination of both target states. The new combination state
-  is created using the same epsilon transition method. The new state
-  has an epsilon transition drawn to all the states that compose
-  it. Since the creation of new epsilon transitions may be triggered
-  every time an epsilon transition is drawn, the process of drawing
-  epsilon transitions is repeated until there are no more epsilon
-  transitions to be made.
-
----
-Compositional Operators
-  expr | expr - union
-  expr & expr - intersection
-  expr - expr - difference
-  expr -- expr - strong difference
-  expr . expr - concatenation
-  expr* - kleene star
-  expr+ - one or more repetion
-  expr? - optional
-  expr{n} - exactly N copies of expr
-  expr{n,} - Zero to N copies of expr
-  expr{,m} - N or more copies of expr
-  expr{n,m} - N to M copies of expr  
-  !expr - negation
-  ^expr - character-level negation
+```
+    any    – Any character in the alphabet.
+    ascii  – Ascii characters. 0..127
+    extend – Ascii extended characters. 
+    alpha  – Alphabetic characters. [A-Za-z]
+    digit  - Digits. [0-9]
+    alnum  – Alpha numerics. [0-9A-Za-z]
+    lower  – Lowercase characters. [a-z]
+    upper  – Uppercase characters. [A-Z]
+    xdigit - Hexadecimal digits. [0-9A-Fa-f]
+    cntrl  – Control characters. 0..31
+    graph  – Graphical characters. [!-~]
+    print  – Printable characters. [ -~]
+    punct  – Punctuation. 
+    space  - Whitespace. [\t\v\f\n\r ]
+    zlen   - Zero length string. ""
+    empty  - Empty set. Matches nothing. ^any
+```  
 
 ---
-Union
+# Building Blocks
 
-  expr | expr - matches any string in machine one or machine two
-  (union pic)
+We have simple machines now.
 
-  The operation first creates a new start state. Epsilon transitions are
-  drawn from the new start state to the start states of both input
-  machines. The resulting machine has a final state set equivalent to
-  the union of the final state sets of both input machines. In this
-  operation, there is the opportunity for nondeterminism among both
-  branches. If there are strings, or prefixes of strings that are
-  matched by both machines then the new machine will follow both parts
-  of the alternation at once. The union operation is shown below.
+Like levers, wedges, wheels, and pulleys.
+
+But let's not stop here.
+
+From simple machines we can make complex machines.
 
 ---
-Intersection
+## Simple
 
-  expr & expr - matches any string that is in both machine one and two
-
-  To achieve intersection, a union is performed on the two
-  machines. After the result has been made deterministic, any final
-  state that is not a combination of final states from both machines
-  has its final state status revoked. To complete the operation, paths
-  that do not lead to a final state are pruned from the
-  machine. Therefore, if there are any such paths in either of the
-  expressions they will be removed by the intersection
-  operator. Intersection can be used to require that two independent
-  patterns be simultaneously satisfied as in the following example.
+![](images/simple_machines.jpg)
 
 ---
-Difference
+## Complex
 
-  expr - expr - matches strings in machine one but not in machine two
-  
-  To achieve subtraction, a union is performed on the two
-  machines. After the result has been made deterministic, any final
-  state that came from machine two or is a combination of states
-  involving a final state from machine two has its final state status
-  revoked. As with intersection, the operation is completed by pruning
-  any path that does not lead to a final state. The following example
-  demonstrates the use of subtraction to exclude specific cases from a
-  set.
+![](images/apollo.gif)
 
 ---
-Strong Difference
+## Isn't She Cute?
 
-  expr -- expr - matches any string of the first machine that does not have any string of the second machine as a substring.
+![](images/minnie_platform.jpg)
+
+---
+# Composition
+
+Ragel's DSL allows you to take these simple machines, and through some basic operators, combine those into bigger machines, and then combine those into BIGGER machines.
+
+Note:
+
+This is the part of Ragel that I found fascinating when I first grokked it.
+
+This compositional technique is what gives Ragel it's extreme simplicity and combinational power.
+
+I can't stress this point enough.
+
+---
+## Compositional Operators
+
+```
+    expr | expr   - union
+    expr & expr   - intersection
+    expr - expr   - difference
+    expr -- expr  - strong difference
+    expr . expr   - concatenation
+    expr*         - kleene star
+    expr+         - one or more repetion
+    expr?         - optional
+    expr{n}       - exactly N copies of expr
+    expr{n,}      - Zero to N copies of expr
+    expr{,m}      - N or more copies of expr
+    expr{n,m}     - N to M copies of expr  
+    !expr         - negation
+    ^expr         - character-level negation
+```
+
+---
+# Union
+
+Matches any string in machine one or machine two
+
+```
+expr | expr
+```
+ 
+![](images/union.png)
+
+Note:
+
+The operation first creates a new start state.
+
+Epsilon transitions are drawn from the new start state to the start states of both input
+machines.
+
+Nondeterminism. If there are strings, or prefixes of strings that are
+matched by both machines then the new machine will follow both parts
+of the alternation at once. The union operation is shown below.
+
+--
+# Union Example
+
+```
+%%{
+  machine union2;
+  # Hex digits, decimal digits, or identifiers
+  main := digit+ | alpha alnum*;
+}%%
+```
+
+![](images/union_example.png)
+
+---
+# Intersection
+
+Matches any string that is in both machine one and two.
+
+```
+expr & expr
+```  
+
+Note:
+Union the machine.
+
+Remove any final state status from any states that aren't final in both machines.
+
+Paths that do not lead to a final state are pruned.
+
+---
+# Intersection Example
+
+```
+%%{
+  machine intersection;
+  main := /[^\n][^\n][^\n][^\n]\n/* & (/[a-z][a-z]*/ | [ \n])**;
+}%%
+```
+
+![](images/intersection_example.png)
+
+
+---
+# Difference
+
+Matches strings in machine one but not in machine two
+
+```
+expr - expr 
+```
+
+---
+## Difference Example
+
+```
+%%{
+  machine difference;
+  # Subtract keywords from identifiers.
+  main := /[a-z][a-z]*/ - ( 'for' | 'int' );
+}%%
+```
+
+![](images/difference_example.png)
+
+---
+# Strong Difference
+
+Matches any string of the first machine that does not have any string of the second machine as a substring.
+
+```
+expr -- expr
+```
+
+Equivalent to:
+
+```
+expr - ( any* expr any* )
+```  
+
+---
+## Strong Difference Example
+
+Used to excluded CRLF from a sequence.
+
+```
+%%{
+  machine strong_difference;
+  crlf = '\r\n';
+  main := [a-z]+ ':' ( any* -- crlf ) crlf;
+}%%
+```
+
+The DEF transition is taken if no other transition can be taken.
+
+![](images/strong_difference_example.png)
+
+
+---
+# Concatenation
+
+Matches all the strings in machine one followed by all the strings in machine two.
+
+```
+expr . expr
+```
+
+![](images/concatenation.png)
+
+Note:
+
+There is an oppotunity for non-determinism of matches from machine one prevent machine two from starting.
+
+There are techniques for avoiding this.
+
+---
+## Concatenation Example
+
+```
+%%{
+  machine concatenation;
+  #concatenation
+  main := [a-z]+ . /ba[rz]/;
+}%%
+```
+
+![](images/concatenation_example.png)
+
+---
+# Kleene Star
+
+Match zero or more repetitions of the machine it is applied to.
+
+```
+expr*
+```  
+
+Note:
+
+DANGER: The possibility for nondeterministic behaviour arises if the
+final states have transitions on any of the same characters as the
+start state.
+
+---
+# Kleene Star Example
+
+```
+%%{
+  machine kleene_star;
+  # Match any number of lines with only lowercase letters.
+  main := /[a-z]*\n/*;
+}%%
+```
+
+![](images/kleene_star_example.png)
+
+---
+# One or More Repetion
+
+Produces the concatenation of the machine with the kleene star of
+itself. The result will match one or more repetitions of the machine.
+
+```
+expr+
+```
 
   Equivalent to:
 
-  expr - ( any* expr any* )
-
-  In the following example, strong subtraction is used to excluded
-  CRLF from a sequence. In the corresponding visualization, the label
-  DEF is short for default. The default transition is taken if no
-  other transition can be taken.
+```
+expr . expr*
+```  
 
 ---
-Concatenation
+# Optional
 
-  expr . expr
-
-  Matches all the strings in machine one followed by all the strings in machine two.
-
-  Concatenation draws epsilon transitions from the final states of the
-  first machine to the start state of the second machine. The final
-  states of the first machine lose their final state status, unless
-  the start state of the second machine is final as
-  well. Concatenation is the default operator. Two machines next to
-  each other with no operator between them results in concatenation.
-
-  DANGER: The opportunity for nondeterministic behaviour results from
-  the possibility of the final states of the first machine accepting a
-  string that is also accepted by the start state of the second
-  machine. The most common scenario in which this happens is the
-  concatenation of a machine that repeats some pattern with a machine
-  that gives a terminating string, but the repetition machine does not
-  exclude the terminating string.
-
-  There are techniques for avoiding this.
-
----
-Kleene Star
-
-  expr*
-
-  Match zero or more repetitions of the machine it is applied to.
-
-  It creates a new start state and an additional final state. Epsilon
-  transitions are drawn between the new start state and the old start
-  state, between the new start state and the new final state, and
-  between the final states of the machine and the new start
-  state. After the machine is made deterministic the effect is of the
-  final states getting all the transitions of the start state.
-
-  DANGER: The possibility for nondeterministic behaviour arises if the
-  final states have transitions on any of the same characters as the
-  start state.
-
----
-One or More Repetion
-
-  expr+
-
-  Produces the concatenation of the machine with the kleene star of
-  itself. The result will match one or more repetitions of the
-  machine.
-
-  Equivalent to:
-
-  expr . expr*
-
----
-Optional
-
-  expr?
-
-  The optional operator produces a machine that accepts the machine
-  given or the zero length string. The optional operator is equivalent
-  to (expr | ’’ ). In the following example the optional operator is
-  used to possibly extend a token.
+```
+expr?
+```
 
   Equivlaent to:
 
-  expr | ''
+```
+expr | ''
+```
+---
+## Optional Example
+
+```
+%%{
+  machine optional;
+  # Match integers or floats.
+  main := digit+ ('.' digit+)?;
+}%%
+```
+
+![](images/optional_example.png)
 
 ---
-Repetition
+# Repetition
 
-  expr{n} - exactly N copies of expr
-  expr{n,} - Zero to N copies of expr
-  expr{,m} - N or more copies of expr
-  expr{n,m} - N to M copies of expr  
-
----
-Negation
-
-  !expr
-
-  Negation produces a machine that matches any string not matched by the given machine. Negation is equivalent to (any* - expr).
+```
+expr{n} - exactly N copies of expr
+expr{n,} - Zero to N copies of expr
+expr{,m} - N or more copies of expr
+expr{n,m} - N to M copies of expr
+```  
 
 ---
-Character- Level Negation
+# Negation
 
-  ^expr
+Matches any string not matched by the given machine.
 
-  Character-level negation produces a machine that matches any single
-  character not matched by the given machine. Character-Level Negation
-  is equivalent to (any - expr). It must be applied only to machines
-  that match strings of length one.
+```
+!expr
+```  
 
----
-State Machine Minimiztion
+Equivalent to:
 
-  "Reduces the number of states in machines by merging equivalent
-  states. It does not change the behaviour of the machine in any
-  way. It will cause some states to be merged into one because they
-  are functionally equivalent. State minimization is on by default. It
-  can be turned off with the -n option."
+```
+any* - expr
+```
 
 ---
-Visualization
+## Negation Example
 
-  ragel -V simple.rl > simple.dot
+```
+%%{
+  machine negation;
+  # Accept anything but a string beginning with a digit.
+  main := !( digit any* );
+}%%
+```
 
-  dot -Tsvg simple.dot -o simple.svg
+![](images/kleene_star_example.png)
+  
+---
+## Character- Level Negation
 
+```
+^expr
+```
 
-  If the final graph is too large to be meaningful, or even drawn, the
-  user is able to inspect portions of the parser by naming particular
-  regular expression definitions with the -S and -M options to the
-  ragel program. Use of Graphviz greatly improves the Ragel
-  programming experience. It allows users to learn Ragel by
-  experimentation and also to track down bugs caused by unintended
-  nondeterminism.  Ragel has another option to help debugging. The -x
-  option causes Ragel to emit the compiled machine in an XML format.
+Equivalent to:
+
+```
+any - expr
+```    
+
+Note:
+
+Must be applied to machines that match length one.
 
 ---
-User Actions
+<br>
+## State Machine Minimization
+
+* Reduces the number of states through optimization
+* Merges equivalent states
+* On by default (can be disabled with -n)
+
+---
+<br>
+# User Actions
 
   Composition is definitely cool and useful. But on top of that, Ragel
   gives you embedded actions. This is where you take all the
   composition and really make it sing, on key.
 
 ---
-Embedding Actions
+<br>
+# Embedding Actions
 
+```
   action <action_name> {
     # host code here
     count += 1
   }
+```
 
-  Actions can be referenced by name or embedded inline.
-
----
-Transitions
-
-  Transitions come in four classes, and actions can be attached to any of them.
+Actions can be referenced by name or embedded inline.
 
 ---
-Entering Transition
+<br>
+# Transitions
 
+Transitions come in four classes, and actions can be attached to any of them.
+
+---
+<br>
+# Entering Transition
+
+```
   > operator
 
   expr > action_name
   expr >{ puts "entering" }
+```  
 
-  Embeds an action into all transitions leaving the "start state"
+Embeds an action into all transitions leaving the "start state"
 
 ---
-Finishing Transition
+<br>
+# Finishing Transition
 
+```
   @ operator
 
   expr @ action_name
   expr @{ puts "finishing" }
+```  
 
-  Embeds an action into all transitions going into a "final state"
+Embeds an action into all transitions going into a "final state"
 
 ---
-All Transition
+<br>
+# All Transition
 
+```
   $ operator
 
   expr $ action_name
   expr ${ puts "transitioned" }
+```
 
-  Embeds an action into all transitions, regardless of type (useful for debugging).
+Embeds an action into all transitions, regardless of type (useful for debugging).
 
 ---
-Leaving Transition
+<br>
+# Leaving Transition
 
+```
   % operator
   expr % action_name
   expr %{ puts "leaving" }
+```
 
-  Embeds an action into all transitions leaving the machine from a "final state"
-
----
-Embedding Operators Can Get Fancy
-
-  The different classes of states are:
-    > – the start state
-    < – any state except the start state
-    $ – all states
-    % – final states
-    @ – any state except final states
-    <> – any except start and final (middle)
-
-  The different kinds of embeddings are:
-    ~ – to-state actions (to)
-    * – from-state actions (from)
-    / – EOF actions (eof)
-    ! – error actions (err)
-    ^ – local error actions (lerr)
+Embeds an action into all transitions leaving the machine from a "final state"
 
 ---
-To-State Actions
+<br>
+## Embedding Operators Can Get Fancy
 
-    >~action    >to(name)    >to{...}    - the start state
-    <~action    <to(name)    <to{...}    - any tate except the start state
-    $~action    $to(name)    $to{...}    - all states
-    %~action    %to(name)    %to{...}    - final states
-    @~action    @to(name)    @to{...}    - any state except final states
-    <>~action   <>to(name)   <>to{...}   - any except start and final (middle)
+See the manual for more information on these.
 
-   To-state actions are executed whenever the state machine moves into
-   the specified state, either by a natural movement over a transition
-   or by an action-based transfer of control such as fgoto. They are
-   executed after the in-transition’s actions but before the current
-   character is advanced and tested against the end of the input
-   block. To-state embeddings stay with the state. They are
-   irrespective of the state’s current set of transitions and any
-   future transitions that may be added in or out of the state.
+* To-State Actions
+* From-State Actions
+* EOF Actions
+* Global Error Actions (for error recovery)
+* Local Error Actions  (for error recovery)
 
 ---
-From-State Actions
+# Nondeterminism
 
-    >*action    >from(name)    >from{...}    – the start state                    
-    <*action    <from(name)    <from{...}    – any state except the start state   
-    $*action    $from(name)    $from{...}    – all states                         
-    %*action    %from(name)    %from{...}    – final states                       
-    @*action    @from(name)    @from{...}    – any state except final states      
-    <>*action   <>from(name)   <>from{...}   – any except start and final (middle)
-
-
-  See the user guide for more detail.
-
-
-  From-state actions are executed whenever the state machine takes a
-  transition from a state.  either to itself or to some other
-  state. These actions are executed immediately after the current
-  character is tested against the input block end marker and before
-  the transition to take is sought based on the current
-  character. From-state actions are therefore executed even if a
-  transition cannot be found and the machine moves into the error
-  state. Like to-state embeddings, from-state embeddings stay with the
-  state.
+One of the problems you will run into is when the trailing match of
+one machine is the same as the leading match of the next machine. In
+these cases, the state will be stuck in the first machine and never
+transition to the next machine.
 
 ---
-EOF Actions
+## Nonedeterminism Example
 
-   >/action   >eof(name)    >eof{...}    – the start state                    
-   </action   <eof(name)    <eof{...}    – any state except the start state   
-   $/action   $eof(name)    $eof{...}    – all states                         
-   %/action   %eof(name)    %eof{...}    – final states                       
-   @/action   @eof(name)    @eof{...}    – any state except final states      
-   <>/action  <>eof(name)   <>eof{...}   – any except start and final (middle)
-             
-  The EOF action embedding operators enable the user to embed actions
-  that are executed at the end of the input stream. EOF actions are
-  stored in states and generated in the write exec block. They are run
-  when p == pe == eof as the execute block is finishing. EOF actions
-  are free to adjust p and jump to another part of the machine to
-  restart execution.
+The \n in ws will preven the final \n from matching.
 
----
-Global Error Actions
+```
+ws = [\n\t ];
+line = word $first ( ws word $tail )* ’\n’;
+lines = line*;
+```     
+The solution here is simple: exclude the newline character from the ws expression.
 
-  >!action   >err{...}   >err{...}   – the start state                   
-  <!action   <err{...}   <err{...}   – any state except the start state  
-  $!action   $err{...}   $err{...}   – all states                        
-  %!action   %err{...}   %err{...}   – final states
-  @!action   @err(name)  @err{...}   – any state except final states
-  <>!action  <>err(name) <>err{...}  – any except start and final (middle)
-
-  Global error actions are stored in the states they are embedded into
-  until compilation is com- plete. They are then transferred to the
-  transitions that move into the error state. These transitions are
-  taken on all input characters that are not already covered by the
-  state’s transitions. If a state with an error action is not final
-  when compilation is complete, then the action is also embedded as an
-  EOF action.  Error actions can be used to recover from errors by
-  jumping back into the machine with fgoto and optionally altering p.
+```
+ws = [\t ];
+line = word $first ( ws word $tail )* ’\n’;
+lines = line*;
+```
 
 ---
-Local Error Actions
+# Ambiguity Problems
 
-  >^action   >lerr(name)   >lerr{...}    – the start state                    
-  <^action   <lerr(name)   <lerr{...}    – any state except the start state   
-  $^action   $lerr(name)   $lerr{...}    – all states                         
-  %^action   %lerr(name)   %lerr{...}    – final states                       
-  @^action   @lerr(name)   @lerr{...}    – any state except final states      
-  <>^action  <>lerr(name)  <>lerr{...}   – any except start and final (middle)
+Here's an incorrect way to parse C language comments:
 
-  Like global error actions, local error actions are also stored in
-  the states they are embedded into until a transfer point. The
-  transfer point is different however. Each local error action
-  embedding is associated with a name. When a machine definition has
-  been fully constructed, all local error action embeddings associated
-  with the same name as the machine definition are transferred to the
-  error transitions. At this time they are also embedded as EOF
-  actions in the case of non-final states.  Local error actions can be
-  used to specify an action to take when a particular section of a
-  larger state machine fails to match. A particular machine
-  definition’s “thread” may die and the local error actions executed,
-  however the machine as a whole may continue to match input.  There
-  are two forms of local error action embeddings. In the first form
-  the name defaults to the current machine. In the second form the
-  machine name can be specified. This is useful when it is more
-  convenient to specify the local error action in a sub-definition
-  that is used to construct the machine definition that the local
-  error action is associated with. To embed local error actions and
-  explicitly state the machine definition on which the transfer is to
-  happen use (name, action) as the action.
+```
+comment = ’/*’ ( any @comm )* ’*/’;
+main := comment ’ ’;
+```
+
+The `any` will prevent the trailing */ from ever matching.
 
 ---
-Error Action Example
+<br><br>
+## This Works But It's Ugly
 
-   action cmd_err {
-       printf( "command error\n" );
-       fhold; fgoto line;
-   }
+```
+comment = ’/*’ ( ( any @comm )* - ( any* ’*/’ any* ) ) ’*/’;
+```
 
-   action from_err {
-       printf( "from error\n" );
-       fhold; fgoto line;
-   }
-
-   action to_err {
-       printf( "to error\n" );
-       fhold; fgoto line;
-   }
-
-   line := [^\n]* '\n' @{ fgoto main; };
-
-   main := (
-     (
-       'from' @err(cmd_err)
-           ( ws+ address ws+ date '\n' ) $err(from_err) |
-       'to' @err(cmd_err)
-           ( ws+ address '\n' ) $err(to_err)
-     )
-   )*;
+We have to carefully exclude things to get it to match.
 
 ---
-Parser Internals
+<br><br>
+## This Is Getting Complicated!
 
-  A number of different variables and statements can be adjusted or used to examine and influence the state of the parser.
+But there's a solution.
 
-  fpc – A pointer to the current character. This is equivalent to accessing the p variable.
-  
-  fc – The current character. This is equivalent to the expression (*p).
-  
-  fcurs – An integer value representing the current state. This value
-  should only be read from. To move to a different place in the
-  machine from action code use the fgoto, fnext or fcall
-  statements. Outside of the machine execution code the cs variable
-  may be modified.
-
-  ftargs – An integer value representing the target state. This value
-  should only be read from. Again, fgoto, fnext and fcall can be used
-  to move to a specific entry point.
-
-  fentry(<label>) – Retrieve an integer value representing the entry
-  point label. The integer value returned will be a compile time
-  constant. This number is suitable for later use in control flow
-  transfer statements that take an expression. This value should not
-  be compared against the current state because any given label can
-  have multiple states representing it. The value returned by fentry
-  can be any one of the multiple states that it represents.  The
-  following statements are available in code blocks:
-
-  fhold; – Do not advance over the current character. If processing
-  data in multiple buffer blocks, the fhold statement should only be
-  used once in the set of actions executed on a character. Multiple
-  calls may result in backing up over the beginning of the buffer
-  block. The fhold statement does not imply any transfer of
-  control. It is equivalent to the p--; statement.
-
-  fexec <expr>; – Set the next character to process. This can be used
-  to backtrack to previous input or advance ahead. Unlike fhold, which
-  can be used anywhere, fexec requires the user to ensure that the
-  target of the backtrack is in the current buffer block or is known
-  to be somewhere ahead of it. The machine will continue iterating
-  forward until pe is arrived at, fbreak is called or the machine
-  moves into the error state. In actions embedded into transitions,
-  the fexec statement is equivalent to setting p to one position ahead
-  of the next character to process. If the user also modifies pe, it
-  is possible to change the buffer block entirely.
-
-  fgoto <label>; – Jump to an entry point defined by <label>. The
-  fgoto statement imme- diately transfers control to the destination
-  state.
-  
-  fgoto *<expr>; – Jump to an entry point given by <expr>. The
-  expression must evaluate to an integer value representing a state.
-  
-  fnext <label>; – Set the next state to be the entry point defined by
-  label. The fnext statement does not immediately jump to the
-  specified state. Any action code following the statement is
-  executed.
-  
-  fnext *<expr>; – Set the next state to be the entry point given by
-  <expr>. The expression must evaluate to an integer value
-  representing a state.
- 
-  fcall <label>; – Push the target state and jump to the entry point
-  defined by <label>. The next fret will jump to the target of the
-  transition on which the call was made. Use of fcall requires the
-  declaration of a call stack. An array of integers named stack and a
-  single integer named top must be declared. With the fcall construct,
-  control is immediately transferred to the destination state. See
-  section 6.1 for more information.
-  
-  fcall *<expr>; – Push the current state and jump to the entry point
-  given by <expr>. The expression must evaluate to an integer value
-  representing a state.
-  
-  fret; – Return to the target state of the transition on which the
-  last fcall was made. Use of fret requires the declaration of a call
-  stack. Control is immediately transferred to the destination state.
-
-  fbreak; – Advance p, save the target state to cs and immediately
-  break out of the execute loop. This statement is useful in
-  conjunction with the noend write option. Rather than process input
-  until pe is arrived at, the fbreak statement can be used to stop
-  processing from an action. After an fbreak statement the p variable
-  will point to the next character in the input. The current state
-  will be the target of the current transition. Note that fbreak
-  causes the target state’s to-state actions to be skipped.
+Ragel lets you embed priorities into transitions to deal with ambiguity.
 
 ---
-Nondeterminism
+<br>
+## Setting Priorities Manually
 
-   One of the problems you will run into is when the trailing match of
-   one machine is the same as the leading match of the next
-   machine. In these cases, the state will be stuck in the first
-   machine and never transition to the next machine.
-
-   Example:
-
-     ws = [\n\t ];
-     line = word $first ( ws word $tail )* ’\n’;
-     lines = line*;
-
-   Since the ws expression includes the newline character, we will not finish the line expression when a newline character is seen.
-
-   The solution here is simple: exclude the newline character from the ws expression.
-
-     ws = [\t ];
-     line = word $first ( ws word $tail )* ’\n’;
-     lines = line*;
-
----
-Ambiguity Problems
-
-  Solving this kind of problem is straightforward when the ambiguity
-  is created by strings that are a single character long. When the
-  ambiguity is created by strings that are multiple characters long we
-  have a more difficult problem. The following example is an incorrect
-  attempt at a regular expression for C language comments.
-
----
-The Wrong Way
-
-      comment = ’/*’ ( any @comm )* ’*/’;
-      main := comment ’ ’;
-
----
-Verbose But Proper:
-
-      comment = ’/*’ ( ( any @comm )* - ( any* ’*/’ any* ) ) ’*/’;
-
-    One way to approach the problem is to exclude the terminating
-    string from the any* expression using set difference. We must be
-    careful to exclude not just the terminating string, but any string
-    that contains it as a substring. A verbose, but proper
-    specification of a C comment parser is given by the following
-    regular expression.
-
----
-This Is Complicated!
-
-    Note that Ragel’s strong subtraction operator -- can also be used
-    here. In doing this subtraction we have phrased the problem of
-    controlling non-determinism in terms of excluding strings common
-    to two expressions that interact when combined. We can also phrase
-    the problem in terms of the transitions of the state machines that
-    implement these expressions.
-
----
-There Are Better Ways
-
-  We can embed priorities into certain transistions to deal with this ambiguity. Ragel gives us some nice ways to do this.
-
----
-If only there were some short-hand operators we could use here.
-
----
-Setting Priorities Manually
-
+```
   expr > int – Sets starting transitions to have priority int.
   
   expr @ int – Sets transitions that go into a final state to have priority int.
   
   expr $ int – Sets all transitions to have priority int.
   
-  expr % int – Sets leaving transitions to have priority int. When a
-  transition is made going out of the machine (either by concatenation
-  or kleene star) its priority is immediately set to the leaving
-  priority.
+  expr % int – Sets leaving transitions to have priority int.
+```  
 
 ---
-Namespacing Priorities
+<br>
+## Namespacing Priorities
 
-  When machines are combined, you can get odd interactions if you
-  don't namespace the priorities.
+When machines are combined, you can get odd interactions if you
+don't namespace the priorities.
 
+```
   expr > (name, int) – Starting transitions.
   expr @ (name, int) – Finishing transitions (into a final state).
   expr $ (name, int) – All transitions.
   expr % (name, int) – Leaving transitions.
-  
----
-Guarded Operations
-
-  Priority embeddings are a very expressive mechanism. At the same
-  time they can be very confusing for the user. They force the user to
-  imagine the transitions inside two interacting expressions and work
-  out the precise effects of the operations between them. When we
-  consider that this problem is worsened by the potential for side
-  effects caused by unintended priority name collisions, we see that
-  exposing the user to priorities is undesirable.
+```
 
 ---
-Finish-Guarded Concatenation
+<br>
+# Guarded Operations
 
-  A higher priority is then embedded into the transitions of the second machine that enter into a final state.
+Thinking in priorities is hard.
 
-    comment = ’/*’ ( any @comm )* :>> ’*/’;
+Fortunately Ragel provides some better mechanisms for us to use.
 
-  This is much simpler to visualize and reason about.
-
----
-Entry-Guarded Concatenation
-
-  expr :> expr
-
-  Assigns a low priority to all transitions of the first machine and a high priority to the starting transitions of the second machine.
-
-    # Leave the catch-all machine on the first character of FIN.
-    main := any* :> 'FIN';
-
-  Equivalent to:
-
-    expr $(unique_name,0) . expr >(unique_name,1)
+These are called "guarded concatenations"
 
 ---
-Finish-Guarded Concatenation
+<br>
+## Finish-Guarded Concatenation
 
-  expr :>> expr
+A higher priority is then embedded into the transitions of the second machine that enter into a final state.
 
-  Higher priority is placed on the final transitions of the second
-  machine. This is useful if one wishes to entertain the possibility
-  of continuing to match the first machine right up until the second
-  machine enters a final state. It terminates the first machine only
-  when the second accepts. In the following example, finish-guarded
-  concatenation causes the move out of the machine that matches
-  everything to be delayed until the full end-of-input marker has been
-  matched.
-  
-  # Leave the catch-all machine on the last character of FIN.
-  main := any* :>> ’FIN’;
+```
+comment = ’/*’ ( any @comm )* :>> ’*/’;
+```    
 
-  Finish-guarded concatenation is equivalent to the following, with
-  one exception. If the right machine’s start state is final, the
-  higher priority is also embedded into it as a leaving priority. This
-  prevents the left machine from persisting via the zero-length
-  string.
-  
-  expr $(unique_name,0) . expr @(unique_name,1)
+This is much simpler to visualize and reason about.
 
 ---
-Left-Guarded Concatenation
+<br>
+## Entry-Guarded Concatenation
 
-  expr <: expr
+A higher priority is given to the second machine.
 
-  This operator places a higher priority on the left expression. It is
-  useful if you want to prefix a sequence with another sequence
-  composed of some of the same characters. For example, one can
-  consume leading whitespace before tokenizing a sequence of
-  whitespace-separated words as in:
-  
-    main := ( ’ ’* >start %fin ) <: ( ’ ’ $ws | [a-z] $alpha )*;
+```
+expr :> expr
+```
 
-  Left-guarded concatenation is equivalent to the following:
+```
+# Leave the catch-all machine on the first character of FIN.
+main := any* :> 'FIN';
+```
 
-    expr $(unique_name,1) . expr >(unique_name,0)
+Equivalent to:
 
----
-Longest-Match Kleene Star
-
-  expr**
-  
-  This version of kleene star puts a higher priority on staying in the
-  machine versus wrapping around and starting over. The LM kleene star
-  is useful when writing simple tokenizers. These machines are built
-  by applying the longest-match kleene star to an alternation of token
-  patterns, as in the following.
-
-    # Repeat tokens, but make sure to get the longest match.
-    Main := (
-      lower ( lower | digit )* %A | digit+ %B |
-      ''
-    )**;
-
-  If a regular kleene star were used the machine above would not be
-  able to distinguish between extending a word and beginning a new
-  one. This operator is equivalent to:
-  
-    ( expr $(unique_name,1) %(unique_name,0) )*
-
-  Note that this operator does not build a scanner in the traditional
-  sense because there is never any backtracking. To build a scanner
-  with backtracking use the Longest-Match machine construction
-  described in
-
-  We have a better way to do that.
+```
+expr $(unique_name,0) . expr >(unique_name,1)
+```
 
 ---
-Parser Modularization
+<br>
+## Left-Guarded Concatenation
 
-  As your Ragel files get big, you'll want to start doing some
-  modularizaiton. You can create sub-parsers that you can call and
-  return from using fcall and fret.
+The left hand machine has a higher priority.
 
+```
+expr <: expr
+```
+
+For stripping leading space:
+
+```
+main := ( ’ ’* >start %fin ) <: ( ’ ’ $ws | [a-z] $alpha )*;
+```
+
+---
+<br>
+## Longest-Match Kleene Star
+
+This has a higher priority for staying in the machine rather than wrapping aroudn again.
+
+```
+expr**
+```
+
+```
+# Repeat tokens, but make sure to get the longest match.
+Main := (
+  lower ( lower | digit )* %A | digit+ %B |
+  ''
+)**;
+```
+
+---
+# Scanners
+
+Scanners are a common thing to build with Ragel, so it has special support for them.
+
+```
+    <machine_name> := |*
+      pattern1 => action1;
+      pattern2 => action2;
+      ...
+    *|;
+```
+
+Note:
+
+On the surface, Ragel scanners are similar to those defined by Lex.
+
+Though there is a key distinguishing feature: patterns may be arbitrary Ragel expressions and can therefore contain embedded
+code.
+
+With a Ragel-based scanner the user need not wait until the end of a pattern before user code can be executed.
+
+Scanners can be used to process sub-languages, as well as for tokenizing programming languages.
+
+---
+## Scanner Example
+
+Tokenizing the contents of a header field.
+
+```
+%%{
+  word = [a-z]+;
+  head_name = 'Header';
+  header := |*
+    word;
+    ' ';
+    '\n' => { fret; };
+  *|;
+  main := ( head_name ':' @{ fcall header; } )*;
+}%%
+```
+
+--
+# Protocol Parsing
+
+Ragel is well suited for protocol parsing.
+
+Mapping an RFC onto a Ragel specification is pretty straight-forward.
+
+Puma has a good example of this (heritage is the original mongrel parser by Zed Shaw)
+
+https://github.com/puma/puma/blob/master/ext/puma_http11/http11_parser_common.rl
+
+
+---
+# State Charts
+
+Ragel allows you to specify states and transitions directly if you desire extreme customization.
+
+This is like programming in the "assumbly" of Ragel.
+
+There are a few new operators for this.
+
+---
+## State Chart Example
+
+Parsing XML CDATA.
+
+```
+action bchar { buff( fpc ); }
+action bbrack1 { buff( "]" ); }
+action bbrack2 { buff( "]]" ); }
+CDATA_body =
+start: (
+']' -> one |
+     (any-']') @bchar ->start
+),
+one: (
+     ']' -> two |
+     [^\]] @bbrack1 @bchar ->start
+),
+two: (
+     '>' -> final |
+     ']' @bbrack1 -> two |
+     [^>\]] @bbrack2 @bchar ->start
+);
+```    
+
+---
+## Parser Modularization
+
+```
     action return { fret; }
     action call_date { fcall date; }
     action call_name { fcall name; }
@@ -1438,246 +1509,233 @@ Parser Modularization
         ( 'departed' | 'arrived' ) ':' @call_date;
 
     main := headers*;
-
-  Calling and jumping should be used carefully as they are operations
-  that take one out of the domain of regular languages. This is when
-  you need to start thinking carefully about the structure of your
-  parser.
-
-  This is very powerful, however. For example, you could use this to
-  parse strings in ruby in strings in ruby if you are careful to keep
-  a stack of your context as you go along.
+```
 
 ---
-Scanners
+<br>
+## Parsing Recursive Structures
 
-  * Uses longest-match semantics to continually process input
-
-   %%{
-
-     machine test_lexer;
-
-     <scanner_name> := |*
-       <token_description> => {<action>};
-       <token_description> => {<action>};
-     *|;
-
-   }%%
-
-  Since scanners are such a common thing to build when doing this type
-  of parsing, Ragel provides some convenience syntax for this.
-
-    <machine_name> := |*
-      pattern1 => action1;
-      pattern2 => action2;
-      ...
-    *|;
-
-  On the surface, Ragel scanners are similar to those defined by
-  Lex. Though there is a key distinguishing feature: patterns may be
-  arbitrary Ragel expressions and can therefore contain embedded
-  code. With a Ragel-based scanner the user need not wait until the
-  end of a pattern before user code can be executed.
-
-  Scanners can be used to process sub-languages, as well as for
-  tokenizing programming languages. In the following example a scanner
-  is used to tokenize the contents of a header field.
-  
-    word = [a-z]+;
-    head_name = 'Header';
-    header := |*
-        word;
-    ' ';
-        '\n' => { fret; };
-    *|;
-    main := ( head_name ':' @{ fcall header; } )*;  
-
-  The scanner construction has a purpose similar to the longest-match
-  kleene star operator **. The key difference is that a scanner is
-  able to backtrack to match a previously matched shorter string when
-  the pursuit of a longer string fails. For this reason the scanner
-  construction operator is not a pure state machine construction
-  operator. It relies on several variables that enable it to backtrack
-  and make pointers to the matched input text available to the
-  user. For this reason scanners must be immediately
-  instantiated. They cannot be defined inline or referenced by another
-  expression. Scanners must be jumped to or called.
-
-  Scanners rely on the ts, te and act variables to be present so that
-  they can backtrack and make pointers to the matched text available
-  to the user. If input is processed using multiple calls to the
-  execute code then the user must ensure that when a token is only
-  partially matched that the prefix is preserved on the subsequent
-  invocation of the execute code.
-
-  The ts variable must be defined as a pointer to the input data. It
-  is used for recording where the current token match begins. This
-  variable may be used in action code for retrieving the text of the
-  current match. Ragel ensures that in between tokens and outside of
-  the longest-match machines that this pointer is set to null. In
-  between calls to the execute code the user must check if ts is set
-  and if so, ensure that the data it points to is preserved ahead of
-  the next buffer block. This is described in more detail below.
-
-  The te variable must also be defined as a pointer to the input
-  data. It is used for recording where a match ends and where scanning
-  of the next token should begin. This can also be used in action code
-  for retrieving the text of the current match.
-
-  The act variable must be defined as an integer type. It is used for
-  recording the identity of the last pattern matched when the scanner
-  must go past a matched pattern in an attempt to make a longer
-  match. If the longer match fails it may need to consult the act
-  variable. In some cases, use of the act variable can be avoided
-  because the value of the current state is enough information to
-  determine which token to accept, however in other cases this is not
-  enough and so the act variable is used.
+The general trick is to store some context about where you are in your
+recursive structure, say in a stack called @nestings, and push/pop to
+it as appropriate. When it comes time to fret, you can examine your
+@nestings and steer the parser as deemed appropriate.
 
 ---
-Scanner Variables
-  (include pic from pdf)
+<br>
+## Implementing Lookahead
 
-  ts
-  te
-  action
+This is possible. The trick here is to match deeper than you need, then use `fhold` to walk the parser back a few characters.
 
 ---
-State Charts
+## Ragel Internals
 
-  In addition to supporting the construction of state machines using
-  regular languages, Ragel provides a way to manually specify state
-  machines using state charts. The comma operator combines machines
-  together without any implied transitions. The user can then manually
-  link machines by specifying epsilon transitions with the ->
-  operator. Epsilon transitions are drawn between the final states of
-  a machine and entry points defined by labels. This makes it possible
-  to build machines using the explicit state-chart method while making
-  minimal changes to the Ragel language.  An interesting feature of
-  Ragel’s state chart construction method is that it can be mixed
-  freely with regular expression constructions. A state chart may be
-  referenced from within a regular expression, or a regular expression
-  may be used in the definition of a state chart transition.
+Ragel uses several variables for state. You can twiddle them in actions.
+
+* data - the buffer where you should store the data
+* p    - start index in data where Ragel is matching
+* pe   - end index of data (Ragel should ignore anything past this)
+* ts   - in a scanner, token start
+* te   - in a scanner, token end
+* act  - in a scanner, last matched action
+
+Those are the major ones. See the manual for more details.
 
 ---
-Join
+## Ragel Operation (roughly)
 
-  expr , expr , ...
-  
-  Join a list of machines together without drawing any transitions,
-  without setting up a start state, and without designating any final
-  states. Transitions between the machines may be specified using
-  labels and epsilon transitions. The start state must be explicity
-  specified with the “start” label. Final states may be specified with
-  an epsilon transition to the implicitly created “final” state. The
-  join operation allows one to build machines using a state chart
-  model.
+1) starts in state 0
+2) characters move it through a state
+3) it consumes p -> pe from data
+4) if cs is >= first_final_state (final states are last) then you have “admitted” the string
 
 ---
-Label
+## Ragel Operation (scanners)
 
-  label: expr
-  
-  Attaches a label to an expression. Labels can be used as the target
-  of epsilon transitions and explicit control transfer statements such
-  as fgoto and fnext in action code.
+Scanners are a bit more involved, but not that much more.
 
----
-Epsilon
-
-  expr -> label
-
-  Draws an epsilon transition to the state defined by label. Epsilon
-  transitions are made deter- ministic when join operators are
-  evaluated. Epsilon transitions that are not in a join operation are
-  made deterministic when the machine definition that contains the
-  epsilon is complete. See Section 6.2 for information on referencing
-  labels.
+1) use a stack to track states
+2) use ts -> te to track where they are in a match
+3) use the stack to backtrack when necessary
+4) keep matching repeatedly until we are done
+5) longest match wins
+6) it's useful to create helper methods (emit, current_buffer, current_match(start, end))
 
 ---
-Dropping Down One Level of Abstraction
+## Ragel String Extraction
 
-  Ragel is that it permits us to bypass the regular language
-  abstraction if we need to. Ragel’s action embedding operators are
-  sometimes insufficient for expressing certain parsing tasks. In the
-  same way that is useful for C language programmers to drop down to
-  assembly language programming using embedded assembler, it is
-  sometimes useful for the Ragel programmer to drop down to
-  programming with state charts.
+To pull out the data you care about, while you are parsing, you will do something like this:
 
-    action bchar { buff( fpc ); }
-    action bbrack1 { buff( "]" ); }
-    action bbrack2 { buff( "]]" ); }
-    CDATA_body =
-    start: (
-    ']' -> one |
-         (any-']') @bchar ->start
-    ),
-    one: (
-         ']' -> two |
-         [^\]] @bbrack1 @bchar ->start
-    ),
-    two: (
-         '>' -> final |
-         ']' @bbrack1 -> two |
-         [^>\]] @bbrack2 @bchar ->start
-    );
+```
+* >mark { puts "mark the beginning a pattern" ; @mark = @data[p] }
+* %emit l{ puts "save the currently matched pattern" ; @things << data[@mark..pe] }
+```
 
 ---
-Semantic Conditions
+## Host Languages
 
-  A semantic condition is a block of user code that is interpreted as
-  an expression and evaluated immediately before a transition is
-  taken. If the code returns a value of true, the transition may be
-  taken. We can now embed code that extracts the length of a field,
-  then proceed to match n data values.
+Several host languages are available.
 
-    action rec_num { i = 0; n = getnumber(); }
-    action test_len { i++ < n }
-    data_fields = (
-        'd'
-        [0-9]+ %rec_num
-        ':'
-        ( [a-z] when test_len )*
-    )**;
+```
+    host language:
+       -C                   The host language is C, C++, Obj-C or Obj-C++ (default)
+       -D                   The host language is D
+       -Z                   The host language is Go
+       -J                   The host language is Java
+       -R                   The host language is Ruby
+       -A                   The host language is C#
+       -O                   The host language is OCaml
+```
 
 ---
-Implementing Lookahead
+## Code Styles
 
-  fhold
+Ragel uses your .rl code to compute the set of states and transitions. From that, it can generate code in a number of different styles.
 
----
-Parsing Recursive Structures
-
-  In general Ragel cannot handle recursive structures because the
-  grammar is interpreted as a regular language. However, depending on
-  what needs to be parsed it is sometimes practical to implement the
-  recursive parts using manual coding techniques. This often works in
-  cases where the recursive structures are simple and easy to
-  recognize, such as in the balancing of parentheses
-
-    fcall;
-    fret;
-
-  The general trick is to store some context about where you are in
-  your recursive structure, say in a stack called @nestings, and
-  push/pop to it as appropriate. When it comes time to fret, you can
-  examine your @nestings and steer the parser as deemed appropriate.
-
----
-Installation
-
-  brew install ragel
+```
+    code style: (C/D/Java/Ruby/C#/OCaml)
+       -T0                  Table driven FSM (default)
+       
+    code style: (C/D/Ruby/C#/OCaml)
+       -T1                  Faster table driven FSM
+       -F0                  Flat table driven FSM
+       -F1                  Faster flat table-driven FSM
+       
+    code style: (C/D/C#/OCaml)
+       -G0                  Goto-driven FSM
+       -G1                  Faster goto-driven FSM
+       
+    code style: (C/D)
+       -G2                  Really fast goto-driven FSM
+       -P<N>                N-Way Split really fast goto-driven FSM
+```
 
 ---
-Host Language
+## Code Styles Performance
 
-  simple.rl -> simple.rb
+Each of these has different visual organization and performance
+characteristics. In languages like C, this can boil down to
+heavily-optimized GOTO statements in a single while loop. It's fast
+and cpu-cache friendly.
 
-  ragel -R simle.rl -o simple.rb
 
 ---
+## Multi-Language
+
+It's possible to have a single Ragel definition that uses import semantics to allow implementing the actions in different languages using the same parent Ragel file. See the http11 parser in puma for details (C and Java)
+
+https://github.com/puma/puma/tree/master/ext/puma_http11
+
+---
+## Ragel in C
+
+It's also possible to prototype in Ruby, then convert it to a C module for super speed. Ragel supports several output formats so you can do this port rather easily.
+
+Again, see mongrel or puma for ideas.
+
+
+---
+## Ragel Directives
+
+There are three main directives that do the bulk of the work.
+
+  %%write init;    (initializes the data buffer and sets the current state)
+
+  %%write data;    (writes out definitions of the state and transition data)
+
+  %%write exec;    (writes out the code that processes the data buffer using the state and transition data)
+
+---
+## %%write data;
+
+```
+  class << self
+    attr_accessor :_hello_key_offsets
+    private :_hello_key_offsets, :_hello_key_offsets=
+  end
+  self._hello_key_offsets = [
+    0, 0, 1, 2, 3, 4
+  ]
+
+  class << self
+    attr_accessor :_hello_trans_keys
+    private :_hello_trans_keys, :_hello_trans_keys=
+  end
+  self._hello_trans_keys = [
+    101, 108, 108, 111, 104, 0
+  ]
+  # LOTS MORE LIKE THIS
+  # ...
+  # ...    
+```
+
+---
+## %%write init;
+
+```
+  begin
+    p ||= 0
+    pe ||= data.length
+    cs = simple_start
+    top = 0
+  end
+```
+
+---
+## %%write exec;
+
+```
+   begin
+    _klen, _trans, _keys = nil
+    _goto_level = 0
+    _resume = 10
+    _eof_trans = 15
+    _again = 20
+    _test_eof = 30
+    _out = 40
+    while true
+    _trigger_goto = false
+    if _goto_level <= 0
+    # LOTS MORE LIKE THIS
+    # ...
+    # ...    
+  end
+```
+
+---
+<br>
+# Installation
+
+```
+brew install ragel
+```
+
+---
+<br>
+## Generating the Ruby
+
+simple.rl -> simple.rb
+
+```
+ragel -R simple.rl -o simple.rb
+```
+
+---
+<br>
+## Visualization
+
+You can get a dotviz graph.
+
+```
+  ragel -V simple.rl > simple.dot
+  dot -Tsvg simple.dot -o simple.svg
+```
+
+---
+## Calling From Ruby
+
 To run on a single buffer of String data:
 
+```
    def ragel_parse(data)
      data = data.unpack("c*")
      eof = data.length
@@ -1688,148 +1746,49 @@ To run on a single buffer of String data:
 
      puts tokens.inspect
    end
+```
 
 ---
-TODO: Walk through the generated ‘hello’ file line by line and explain what is going on (data jump tables, start/end states, execution code)
+## Ragel Playground
+
+I created a tool in Volt to do some basic visualization.
+
+https://github.com/ijcd/ragel_playground
+
+It's definitely a work in progress, but feel free to try it out.
+
+Note:
+Volt is very cool, by the way. You can do reactive programming without ever stepping out of Ruby. Give it a try if you haven't already.
 
 ---
+## Demos
+
+1. hello parser
+1. args parser
+1. args state chart
+
+Note:
+
+Walk through a generated ‘hello’ file line by line and explain what is
+going on (data jump tables, start/end states, execution code)
+
 How does it work?
-1) starts in state 0
-2) characters move it through a state
-3) it consumes p -> pe from data
-4) if cs is >= first_final_state (final states are last) then you have “admitted” the string
 
-ragel -R parser.rl && ruby parser.rb
+Note:
 
----
-Scanners are a bit more involved, but not that much:
-1) use a stack to track states?
-2) use ts -> te to track where they are in a match
-3) use the stack to backtrack when necessary
-4) keep matching thing until we are done
-5) helper methods (emit, current_buffer, etc… (from goruby)
+Walk through a generated ‘hello’ file line by line and explain what is
+going on (data jump tables, start/end states, execution code)
 
----
-At this point the watcher will be able to create regex-like parsers that can either admit or reject a string. Useful for many things, but there's so much more!
+How does it work?
 
 
 ---
-We'll next talk about embedding custom actions into machine states and transitions, and ways to achieve fine-grained flow-control not possible with regexs. We'll learn how to manipulate the machine's registers to achieve things like look-ahead, recursive-descent, looping, and more. We'll get fancy and simpler at the same time by using transition priorities to either achieve or resist early-exit from a pattern.
+# Talk to me, baby!
 
-
----
-Last but not least, we'll learn how to drop down into the "assembly language" of Ragel -- states and transitions -- in order to specify fully-custom state-machines whose specification lies outside even the compositional language of Ragel's standard syntax.
-
-
----
-We will finish off the talk with some real-world examples of both simple and complex machines, as well as an overview of how to use the Ragel command line tools for compilation and graph visualization.
-
-  ragel -R simple.rl
-
-  ragel -V simple.rl > simple.dot
-
-  dot -Tsvg simple.dot -o simple.svg
-
-  dot -Tpng simple.dot -o simple.png
-
----
-Ruby projects using Ragel
-* Mongrel, Unicorn, Puma
-* Whitequark
-* Mail
-* RedCloth
-* Hpricot
-
----
-TODO: Examples in the Wild:
-1) whitequark
-2) https://github.com/github/linguist/tree/master/samples/Ragel%20in%20Ruby%20Host
-3) Gherkin: A fast lexer and parser for the Gherkin language based on Ragel. Gherkin is two things: https://github.com/cucumber/gherkin/blob/master/ragel/lexer.rb.rl.erb
-4) mongrel / ragel / puma
-5) RedCloth (textile markup parser)
-
----
-SIMPLE REGEXP-LIKE MACHINES
-
----
-FULL-BLOWN CONTEXT-SENSITIVE SCANNERS
-
----
-PROTOCOL PARSING
-
----
-LANGUAGE GRAMMARS
-
----
-Talk to me, baby!
-
-github.com/ijcd
 @ijcd
 
----
-=begin
-%%{
-  machine simple_lexer;
+github.com/ijcd
 
-  integer     = ('+'|'-')?[0-9]+;
-  float       = ('+'|'-')?[0-9]+'.'[0-9]+;
-  assignment  = '=';
-  identifier  = [a-zA-Z][a-zA-Z_]+;
+https://github.com/ijcd/ragel_playground
 
-  main := |*
-
-    integer => {
-      emit(:integer_literal, data, token_array, ts, te)
-    };
-
-    float => {
-      emit(:float_literal, data, token_array, ts, te)
-    };
-
-    assignment => {
-      emit(:assignment_operator, data, token_array, ts, te)
-    };
-
-    identifier => {
-      emit(:identifier, data, token_array, ts, te)
-    };
-
-    space;
-
-  *|;
-}%%
-=end
-
-def emit(token_name, data, target_array, ts, te)
-  target_array << {:name => token_name.to_sym, :value => data[ts...te].pack("c*") }
-end
-
-def run_lexer(data)
-  data = data.unpack("c*") if(data.is_a?(String))
-  eof = data.length
-  token_array = []
-
-  %% write init;
-  %% write exec;
-
-  puts token_array.inspect
-end
-
----
-Ragel code looks like:
-
-action dgt      { printf("DGT: %c\n", fc); }
-action dec      { printf("DEC: .\n"); }
-action exp      { printf("EXP: %c\n", fc); }
-action exp_sign { printf("SGN: %c\n", fc); }
-action number   { /*NUMBER*/ }
-
-number = (
-    [0-9]+ $dgt ( '.' @dec [0-9]+ $dgt )?
-    ( [eE] ( [+\-] $exp_sign )? [0-9]+ $exp )?
-) %number;
-
-main := ( number '\n' )*;
-
----
-TODO: color "enhanced" labels in blue
+https://github.com/ijcd/rubyconf-2015-ragel
