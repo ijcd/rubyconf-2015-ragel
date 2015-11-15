@@ -77,7 +77,8 @@
 <h2>But Very Furry</h2><p><img src="images/boofus_cozy2.jpg" alt=""></p><aside class="notes"><p>Boofus likes being cozy.</p></aside>
 </section>
 <section id="and-dopey" class="slide" data-has-notes="true">
-<h2>And Dopey</h2><p><img src="images/minnie_hoodie.jpg" alt=""></p>
+<h2>And Dopey</h2><p><img src="images/minnie_hoodie.jpg" alt=""></p><aside class="notes"><p>slide 10
+3 minutes</p></aside>
 </section>
 <section id="and-relaxed" class="slide" data-has-notes="true">
 <h2>And Relaxed</h2><p><img src="images/boofus_relaxed.jpg" alt=""></p><aside class="notes"><p>Boofus is more chill.</p></aside>
@@ -122,18 +123,25 @@ tool, Ragel.</p>
 <h2>Ragel Is Really Cool</h2><p>If you don&#39;t have it in your bat-belt yet, you need to add it. Today!</p>
 <p><img src="images/adam_west_batman.jpg" alt=""></p><aside class="notes"><p>Ragel excels at ripping-fast parsing and processing of textual data.</p></aside>
 </section>
-<section id="ruby-projects-using-ragel" class="slide">
+<section id="ruby-projects-using-ragel" class="slide" data-has-notes="true">
+<p><br></p>
 <h2>Ruby projects using Ragel</h2><ul>
 <li>Mongrel, Unicorn, Puma</li>
-<li>Whitequark </li>
+<li>Whitequark</li>
 <li>Mail</li>
 <li>RedCloth</li>
 <li>Hpricot</li>
 <li>Gherkin</li>
 </ul>
+<p><a href="https://github.com/whitequark/parser/blob/master/lib/parser/lexer.rl">https://github.com/whitequark/parser/blob/master/lib/parser/lexer.rl</a></p><aside class="notes"><p>If you need more examples after this talk, these are good projects to look at.</p>
+<p>Note:
+slide 20
+6 minutes</p></aside>
 </section>
 <section id="what-does-ragel-look-like" class="slide">
-<h1>What Does Ragel Look Like</h1><pre><code>action dgt      { printf(<span class="hljs-string">"DGT: %c\n"</span>, fc); }
+<p><br></p>
+<h2>What Does Ragel Look Like?</h2><pre><code>%%{
+action dgt      { printf(<span class="hljs-string">"DGT: %c\n"</span>, fc); }
 action dec      { printf(<span class="hljs-string">"DEC: .\n"</span>); }
 action exp      { printf(<span class="hljs-string">"EXP: %c\n"</span>, fc); }
 action exp_sign { printf(<span class="hljs-string">"SGN: %c\n"</span>, fc); }
@@ -145,18 +153,11 @@ number = (
 ) <span class="hljs-decorator">%number</span>;
 
 main := ( number <span class="hljs-string">'\n'</span> )*;
+}%%
 </code></pre>
 </section>
 <section id="but-regular-expressions-are-easy" class="slide" data-has-notes="true">
-<h2>But Regular Expressions are easy!</h2><p>zarro boogs found</p>
-<p><img src="images/regular_expression.jpg" alt=""></p><aside class="notes"><p>What&#39;s that you say? Parsing text?</p>
-<p>Parsing text is easy.</p>
-<p>You just use regular expressions, right?</p>
-<p>Simple. No problem.</p>
-<p>They have their place, but you can reach for something better.</p></aside>
-</section>
-<section id="regular-expressions" class="slide" data-has-notes="true">
-<h2>Regular Expressions</h2><p>Regular expressions consist of constants and operator symbols that denote sets of strings and operations over these sets, respectively. (from Wikipedia)</p>
+<h2>But Regular Expressions are easy!</h2><p>Regular expressions consist of constants and operator symbols that denote sets of strings and operations over these sets, respectively. (from Wikipedia)</p>
 <pre><code>   /a/         # <span class="hljs-keyword">match</span> a
    /abc/       # <span class="hljs-keyword">match</span> <span class="hljs-string">"a"</span>, <span class="hljs-keyword">then</span> <span class="hljs-string">"b"</span>, <span class="hljs-keyword">then</span> <span class="hljs-string">"c"</span> (concatenation)
    /a|b/       # <span class="hljs-keyword">match</span> <span class="hljs-string">"a"</span> <span class="hljs-keyword">or</span> <span class="hljs-string">"b"</span> (alteration)
@@ -177,6 +178,14 @@ main := ( number <span class="hljs-string">'\n'</span> )*;
   <span class="hljs-function"><span class="hljs-keyword">end</span>
 <span class="hljs-title">end</span></span>
 </code></pre>
+</section>
+<section id="irregular-expressions" class="slide" data-has-notes="true">
+<h2>Irregular Expressions</h2><p>zarro boogs found</p>
+<p><img src="images/regular_expression.jpg" alt=""></p><aside class="notes"><p>What&#39;s that you say? Parsing text?</p>
+<p>Parsing text is easy.</p>
+<p>You just use regular expressions, right?</p>
+<p>Simple. No problem.</p>
+<p>They have their place, but you can reach for something better.</p></aside>
 </section>
 <section id="sometimes-you-want-more-control" class="slide" data-has-notes="true">
 <h2>Sometimes You Want More Control</h2><p>I posit that this might be some sort of automaton.</p>
@@ -211,10 +220,11 @@ automata. Given one, we can convert it to any of the other forms.</p>
 <section id="state-machines-are-everywhere" class="slide">
 <h2>State machines are everywhere</h2><p><img src="images/state_machines_everywhere.png" alt=""></p>
 </section>
-<section id="theyre-in-your-stoplight" class="slide">
+<section id="theyre-in-your-stoplight" class="slide" data-has-notes="true">
 <p><br></p>
 <h2>They&#39;re in your stoplight</h2><p><br>
-<img src="images/stoplight.gif" alt=""></p>
+<img src="images/stoplight.gif" alt=""></p><aside class="notes"><p>slide 30
+9 minutes</p></aside>
 </section>
 <section id="they-run-your-cpu" class="slide" data-has-notes="true">
 <h2>They run your CPU</h2><p><img src="images/cpu_machine.png" alt=""></p><aside class="notes"><p>Every tick of your CPU advancing a state machine from one state to
@@ -268,9 +278,10 @@ consuming an input symbol.</p>
 <p>Composition.</p>
 <p>Computer science.</p></aside>
 </section>
-<section id="simple-machines" class="slide">
+<section id="simple-machines" class="slide" data-has-notes="true">
 <h1>Simple Machines</h1><p>  &#39;a&#39;, &#39;a&#39;*, &#39;a&#39;+</p>
-<p><img src="images/simple_machines.png" alt=""></p>
+<p><img src="images/simple_machines.png" alt=""></p><aside class="notes"><p>slide 40
+12 minutes</p></aside>
 </section>
 <section id="more-complex" class="slide">
 <h1>More Complex</h1><p>&#39;hello&#39;*</p>
@@ -409,6 +420,10 @@ EBNF-ish looking definition that, instead, calls out to our code when we need it
     <span class="hljs-preprocessor"><span class="hljs-keyword">import</span> "inputfile.h";</span>
 </code></pre><p>These can help you keep things organized. See the manual for the specific semantics of each.</p>
 </section>
+<section id="whitespace" class="slide">
+<p><br></p>
+<h1>Whitespace</h1><p>  Any amount of whitespace can separate tokens.</p>
+</section>
 <section id="comments" class="slide">
 <h1>Comments</h1><pre><code>  # <span class="hljs-keyword">is</span> used <span class="hljs-keyword">for</span> single <span class="hljs-built_in">line</span> comments
 </code></pre>
@@ -433,8 +448,10 @@ EBNF-ish looking definition that, instead, calls out to our code when we need it
 </code></pre><p>You can escape the end of a line with a \ (as in shell scripting)</p>
 </section>
 <section id="host-language-code" class="slide">
-<h1>Host Language Code</h1><p>Braces are used to delimit host language code in %%{ }%% sections</p>
-<pre><code>   <span class="hljs-collection">{ puts <span class="hljs-string">"I am ruby"</span> }</span>
+<h1>Host Language Code</h1><p>Braces are used to delimit host language code</p>
+<pre><code><span class="hljs-preprocessor">%</span><span class="hljs-preprocessor">%</span>{
+   { puts <span class="hljs-string">"I am ruby"</span> }    
+}<span class="hljs-preprocessor">%</span><span class="hljs-preprocessor">%</span>
 </code></pre>
 </section>
 <section id="numbers" class="slide">
@@ -445,19 +462,16 @@ EBNF-ish looking definition that, instead, calls out to our code when we need it
 </section>
 <section id="keywords" class="slide">
 <h1>Keywords</h1><pre><code>    <span class="hljs-keyword">access</span>
-    actionalphtype
+    <span class="hljs-keyword">action</span>
+    alphtype
     getkey
     <span class="hljs-built_in">write</span>
     machine
     <span class="hljs-keyword">include</span>
 </code></pre>
 </section>
-<section id="whitespace" class="slide">
-<p><br></p>
-<h1>Whitespace</h1><p>  Any amount of whitespace can separate tokens.</p>
-</section>
 <section id="concatenation-literal" class="slide">
-<h1>Concatenation Literal</h1><p>Both of these produce a match on a sequence of letters.</p>
+<h1>Concatenation Literal</h1><p>Match on a sequence of letters.</p>
 <pre><code><span class="hljs-comment">%%{</span>
   <span class="hljs-function_or_atom">machine</span> <span class="hljs-function_or_atom">simple</span>;
   <span class="hljs-function_or_atom">main</span> := <span class="hljs-string">'simple'</span>;
@@ -498,7 +512,7 @@ EBNF-ish looking definition that, instead, calls out to our code when we need it
 <p>How many turtles do you need?</p></aside>
 </section>
 <section id="range-expression" class="slide">
-<h1>Range Expression</h1><p>Matches </p>
+<h1>Range Expression</h1><p>Matches any character between &#39;a&#39; and &#39;z&#39; inclusive.</p>
 <pre><code><span class="hljs-comment">%%{</span>
   <span class="hljs-function_or_atom">machine</span> <span class="hljs-function_or_atom">range</span>;
   <span class="hljs-function_or_atom">main</span> := <span class="hljs-string">'a'</span>..<span class="hljs-string">'z'</span>;
@@ -578,14 +592,15 @@ EBNF-ish looking definition that, instead, calls out to our code when we need it
 machines.</p>
 <p>Nondeterminism. If there are strings, or prefixes of strings that are
 matched by both machines then the new machine will follow both parts
-of the alternation at once. The union operation is shown below.</p>
-<p>--</p>
+of the alternation at once. The union operation is shown below.</p></aside>
+</section>
+<section id="union-example" class="slide">
 <h1>Union Example</h1><pre><code><span class="hljs-var_expand">%%</span>{
   machine union2<span class="hljs-comment">;</span>
   # Hex digits, decimal digits, <span class="hljs-literal">or</span> identifiers
   main := digit+ | alpha alnum*<span class="hljs-comment">;</span>
 }<span class="hljs-var_expand">%%</span>
-</code></pre><p><img src="images/union_example.png" alt=""></p></aside>
+</code></pre><p><img src="images/union_example.png" alt=""></p>
 </section>
 <section id="intersection" class="slide" data-has-notes="true">
 <h1>Intersection</h1><p>Matches any string that is in both machine one and two.</p>
@@ -705,6 +720,7 @@ itself. The result will match one or more repetitions of the machine.</p>
 </code></pre><p><img src="images/kleene_star_example.png" alt=""></p>
 </section>
 <section id="character-level-negation" class="slide" data-has-notes="true">
+<p><br></p>
 <h2>Character- Level Negation</h2><pre><code><span class="hljs-comment">^expr</span>
 </code></pre><p>Equivalent to:</p>
 <pre><code><span class="hljs-type">any</span> - <span class="hljs-type">expr</span>
@@ -779,6 +795,7 @@ itself. The result will match one or more repetitions of the machine.</p>
 </ul>
 </section>
 <section id="nondeterminism" class="slide">
+<p><br></p>
 <h1>Nondeterminism</h1><p>One of the problems you will run into is when the trailing match of
 one machine is the same as the leading match of the next machine. In
 these cases, the state will be stuck in the first machine and never
@@ -796,6 +813,7 @@ lines = line*;
 </code></pre>
 </section>
 <section id="ambiguity-problems" class="slide">
+<p><br></p>
 <h1>Ambiguity Problems</h1><p>Here&#39;s an incorrect way to parse C language comments:</p>
 <pre><code><span class="hljs-title">comment</span> = ’/*’ ( any <span class="hljs-variable">@comm</span> )* ’*/’;
 <span class="hljs-title">main</span> := comment ’ ’;
@@ -838,13 +856,13 @@ don&#39;t namespace the priorities.</p>
 <p>Fortunately Ragel provides some better mechanisms for us to use.</p>
 <p>These are called &quot;guarded concatenations&quot;</p>
 </section>
-<section id="finishguarded-concatenation" class="slide">
+<section id="finishguarded-concatenation" class="slide" data-has-notes="true">
 <p><br></p>
 <h2>Finish-Guarded Concatenation</h2><p>A higher priority is then embedded into the transitions of the second machine that enter into a final state.</p>
 <pre><code>comment = ’/*’ ( any <span class="hljs-variable">@comm</span> )* <span class="hljs-symbol">:&gt;&gt;</span> ’*<span class="hljs-regexp">/’;</span>
-</code></pre><p>This is much simpler to visualize and reason about.</p>
+</code></pre><p>This is much simpler to visualize and reason about.</p><aside class="notes"><p>As soon as we hit a &#39;*/&#39; while in the comment, we will match and exit the comment.</p></aside>
 </section>
-<section id="entryguarded-concatenation" class="slide">
+<section id="entryguarded-concatenation" class="slide" data-has-notes="true">
 <p><br></p>
 <h2>Entry-Guarded Concatenation</h2><p>A higher priority is given to the second machine.</p>
 <pre><code><span class="hljs-type">expr</span> :&gt; <span class="hljs-type">expr</span>
@@ -852,19 +870,19 @@ don&#39;t namespace the priorities.</p>
 main <span class="hljs-symbol">:</span>= any* <span class="hljs-symbol">:&gt;</span> <span class="hljs-string">'FIN'</span>;
 </code></pre><p>Equivalent to:</p>
 <pre><code>expr $(unique_name,<span class="hljs-number">0</span>) . expr &gt;(unique_name,<span class="hljs-number">1</span>)
-</code></pre>
+</code></pre><aside class="notes"><p>As soon as we hit an &#39;F&#39;, we will leave the first machine an start matching the second.</p></aside>
 </section>
-<section id="leftguarded-concatenation" class="slide">
+<section id="leftguarded-concatenation" class="slide" data-has-notes="true">
 <p><br></p>
 <h2>Left-Guarded Concatenation</h2><p>The left hand machine has a higher priority.</p>
 <pre><code><span class="hljs-type">expr</span> &lt;: <span class="hljs-type">expr</span>
 </code></pre><p>For stripping leading space:</p>
 <pre><code>main := ( ’ ’* &gt;<span class="hljs-keyword">start</span> <span class="hljs-decorator">%fin</span> ) &lt;: ( ’ ’ <span class="hljs-variable">$ws</span> | [a-z] <span class="hljs-variable">$alpha</span> )*;
-</code></pre>
+</code></pre><aside class="notes"><p>This allows the left machine to greedily eat any spaces. The second machine won&#39;t match a space until it is already being matched, having had a letter appear already.</p></aside>
 </section>
 <section id="longestmatch-kleene-star" class="slide">
 <p><br></p>
-<h2>Longest-Match Kleene Star</h2><p>This has a higher priority for staying in the machine rather than wrapping aroudn again.</p>
+<h2>Longest-Match Kleene Star</h2><p>This has a higher priority for staying in the machine rather than wrapping around again.</p>
 <pre><code>expr<span class="hljs-keyword">*</span><span class="hljs-keyword">*</span>
 </code></pre><pre><code><span class="hljs-comment"># Repeat tokens, but make sure to get the longest match.</span>
 Main := (
@@ -887,6 +905,7 @@ code.</p>
 <p>Scanners can be used to process sub-languages, as well as for tokenizing programming languages.</p></aside>
 </section>
 <section id="scanner-example" class="slide">
+<p><br></p>
 <h2>Scanner Example</h2><p>Tokenizing the contents of a header field.</p>
 <pre><code>%%{
   word = [a-z]+<span class="hljs-comment">;</span>
@@ -898,15 +917,20 @@ code.</p>
   *|<span class="hljs-comment">;</span>
   main := ( head_name ':' @{ fcall header<span class="hljs-comment">; } )*;</span>
 }%%
-</code></pre><p>--</p>
+</code></pre>
+</section>
+<section id="protocol-parsing" class="slide">
 <h1>Protocol Parsing</h1><p>Ragel is well suited for protocol parsing.</p>
 <p>Mapping an RFC onto a Ragel specification is pretty straight-forward.</p>
 <p>Puma has a good example of this (heritage is the original mongrel parser by Zed Shaw)</p>
-<p><a href="https://github.com/puma/puma/blob/master/ext/puma_http11/http11_parser_common.rl">https://github.com/puma/puma/blob/master/ext/puma_http11/http11_parser_common.rl</a></p>
+<p><small>
+<a href="https://github.com/puma/puma/blob/master/ext/puma_http11/http11_parser_common.rl">https://github.com/puma/puma/blob/master/ext/puma_http11/http11_parser_common.rl</a>
+</small></p>
 </section>
 <section id="state-charts" class="slide">
+<p><br></p>
 <h1>State Charts</h1><p>Ragel allows you to specify states and transitions directly if you desire extreme customization.</p>
-<p>This is like programming in the &quot;assumbly&quot; of Ragel.</p>
+<p>This is like programming in the &quot;assembly&quot; of Ragel.</p>
 <p>There are a few new operators for this.</p>
 </section>
 <section id="state-chart-example" class="slide">
@@ -930,7 +954,7 @@ CDATA_body =
 );
 </code></pre>
 </section>
-<section id="parser-modularization" class="slide">
+<section id="parser-modularization" class="slide" data-has-notes="true">
 <h2>Parser Modularization</h2><pre><code>    <span class="hljs-atom">action</span> <span class="hljs-atom">return</span> { <span class="hljs-atom">fret</span>; }
     <span class="hljs-atom">action</span> <span class="hljs-atom">call_date</span> { <span class="hljs-atom">fcall</span> <span class="hljs-atom">date</span>; }
     <span class="hljs-atom">action</span> <span class="hljs-atom">call_name</span> { <span class="hljs-atom">fcall</span> <span class="hljs-atom">name</span>; }
@@ -949,13 +973,13 @@ CDATA_body =
         ( <span class="hljs-string">'departed'</span> | <span class="hljs-string">'arrived'</span> ) <span class="hljs-string">':'</span> @<span class="hljs-atom">call_date</span>;
 
     <span class="hljs-atom">main</span> := <span class="hljs-atom">headers</span>*;
-</code></pre>
+</code></pre><aside class="notes"><p>You can use fcall and fret to jump around in the parser, like function calls.</p></aside>
 </section>
 <section id="parsing-recursive-structures" class="slide">
 <p><br></p>
 <h2>Parsing Recursive Structures</h2><p>The general trick is to store some context about where you are in your
 recursive structure, say in a stack called @nestings, and push/pop to
-it as appropriate. When it comes time to fret, you can examine your
+it as appropriate. When it comes time to call <code>fret</code>, you can examine your
 @nestings and steer the parser as deemed appropriate.</p>
 </section>
 <section id="implementing-lookahead" class="slide">
@@ -964,32 +988,39 @@ it as appropriate. When it comes time to fret, you can examine your
 </section>
 <section id="ragel-internals" class="slide">
 <h2>Ragel Internals</h2><p>Ragel uses several variables for state. You can twiddle them in actions.</p>
-<ul>
-<li>data - the buffer where you should store the data</li>
-<li>p    - start index in data where Ragel is matching</li>
-<li>pe   - end index of data (Ragel should ignore anything past this)</li>
-<li>ts   - in a scanner, token start</li>
-<li>te   - in a scanner, token end</li>
-<li>act  - in a scanner, last matched action</li>
-</ul>
-<p>Those are the major ones. See the manual for more details.</p>
+<pre><code>* <span class="hljs-type">data</span> - the buffer <span class="hljs-keyword">where</span> you should store the <span class="hljs-type">data</span>
+* p    - start <span class="hljs-built_in">index</span> <span class="hljs-type">in</span> <span class="hljs-type">data</span> <span class="hljs-keyword">where</span> Ragel is matching
+* pe   - <span class="hljs-keyword">end</span> <span class="hljs-built_in">index</span> of <span class="hljs-type">data</span> (Ragel should ignore anything past this)
+* ts   - <span class="hljs-type">in</span> a scanner, token start
+* te   - <span class="hljs-type">in</span> a scanner, token <span class="hljs-keyword">end</span>
+* act  - <span class="hljs-type">in</span> a scanner, last matched <span class="hljs-keyword">action</span>
+</code></pre><p>Those are the major ones. See the manual for more details.</p>
 </section>
 <section id="ragel-operation-roughly" class="slide">
-<h2>Ragel Operation (roughly)</h2><p>1) starts in state 0
-2) characters move it through a state
-3) it consumes p -&gt; pe from data
-4) if cs is &gt;= first_final_state (final states are last) then you have “admitted” the string</p>
+<p><br></p>
+<h2>Ragel Operation (roughly)</h2><ol>
+<li>Starts in state 0</li>
+<li>Feed it data, updating <code>p</code> and <code>pe</code> as appropriate</li>
+<li>Run the <code>%%exec</code> loop</li>
+<li>Characters move it through a state</li>
+<li>It consumes <code>p -&gt; pe</code> from <code>data</code></li>
+<li>If <code>cs</code> is <code>&gt;= first_final_state</code> (final states are last) then you have “admitted” the string</li>
+</ol>
 </section>
 <section id="ragel-operation-scanners" class="slide">
+<p><br></p>
 <h2>Ragel Operation (scanners)</h2><p>Scanners are a bit more involved, but not that much more.</p>
-<p>1) use a stack to track states
-2) use ts -&gt; te to track where they are in a match
-3) use the stack to backtrack when necessary
-4) keep matching repeatedly until we are done
-5) longest match wins
-6) it&#39;s useful to create helper methods (emit, current_buffer, current_match(start, end))</p>
+<ol>
+<li>Use a stack to track states</li>
+<li>Use ts -&gt; te to track where they are in a match</li>
+<li>Use the stack to backtrack when necessary</li>
+<li>Keep matching repeatedly until we are done</li>
+<li>Longest match wins</li>
+<li>It&#39;s useful to create helper methods (<code>emit</code>, <code>current_buffer</code>, <code>current_match(start, end)</code>)</li>
+</ol>
 </section>
 <section id="ragel-string-extraction" class="slide">
+<p><br></p>
 <h2>Ragel String Extraction</h2><p>To pull out the data you care about, while you are parsing, you will do something like this:</p>
 <pre><code>* &gt;mark { puts <span class="hljs-string">"mark the beginning a pattern"</span> ; <span class="hljs-variable">@mark</span> = <span class="hljs-variable">@data</span>[p] }
 * <span class="hljs-variable">%emit</span> l{ puts <span class="hljs-string">"save the currently matched pattern"</span> ; <span class="hljs-variable">@things</span> &lt;&lt; data[<span class="hljs-variable">@mark</span>..pe] }
@@ -998,13 +1029,13 @@ it as appropriate. When it comes time to fret, you can examine your
 <section id="host-languages" class="slide">
 <h2>Host Languages</h2><p>Several host languages are available.</p>
 <pre><code>    host language:
-       -<span class="ruby"><span class="hljs-constant">C</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">C</span>, <span class="hljs-constant">C</span>++, <span class="hljs-constant">Obj</span>-<span class="hljs-constant">C</span> <span class="hljs-keyword">or</span> <span class="hljs-constant">Obj</span>-<span class="hljs-constant">C</span>++ (default)
-</span>       -<span class="ruby"><span class="hljs-constant">D</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">D</span>
-</span>       -<span class="ruby"><span class="hljs-constant">Z</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">Go</span>
-</span>       -<span class="ruby"><span class="hljs-constant">J</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">Java</span>
-</span>       -<span class="ruby"><span class="hljs-constant">R</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">Ruby</span>
-</span>       -<span class="ruby"><span class="hljs-constant">A</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">C</span><span class="hljs-comment">#</span>
-</span>       -<span class="ruby"><span class="hljs-constant">O</span>                   <span class="hljs-constant">The</span> host language is <span class="hljs-constant">OCaml</span></span>
+       -<span class="ruby"><span class="hljs-constant">C</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">C</span>, <span class="hljs-constant">C</span>++, <span class="hljs-constant">Obj</span>-<span class="hljs-constant">C</span> <span class="hljs-keyword">or</span> <span class="hljs-constant">Obj</span>-<span class="hljs-constant">C</span>++ (default)
+</span>       -<span class="ruby"><span class="hljs-constant">D</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">D</span>
+</span>       -<span class="ruby"><span class="hljs-constant">Z</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">Go</span>
+</span>       -<span class="ruby"><span class="hljs-constant">J</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">Java</span>
+</span>       -<span class="ruby"><span class="hljs-constant">R</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">Ruby</span>
+</span>       -<span class="ruby"><span class="hljs-constant">A</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">C</span><span class="hljs-comment">#</span>
+</span>       -<span class="ruby"><span class="hljs-constant">O</span>    <span class="hljs-constant">The</span> host language is <span class="hljs-constant">OCaml</span></span>
 </code></pre>
 </section>
 <section id="code-styles" class="slide">
@@ -1027,24 +1058,41 @@ it as appropriate. When it comes time to fret, you can examine your
 </code></pre>
 </section>
 <section id="code-styles-performance" class="slide">
+<p><br><br></p>
 <h2>Code Styles Performance</h2><p>Each of these has different visual organization and performance
 characteristics. In languages like C, this can boil down to
 heavily-optimized GOTO statements in a single while loop. It&#39;s fast
 and cpu-cache friendly.</p>
 </section>
 <section id="multilanguage" class="slide">
+<p><br></p>
 <h2>Multi-Language</h2><p>It&#39;s possible to have a single Ragel definition that uses import semantics to allow implementing the actions in different languages using the same parent Ragel file. See the http11 parser in puma for details (C and Java)</p>
-<p><a href="https://github.com/puma/puma/tree/master/ext/puma_http11">https://github.com/puma/puma/tree/master/ext/puma_http11</a></p>
+<p><small>
+<a href="https://github.com/puma/puma/tree/master/ext/puma_http11">https://github.com/puma/puma/tree/master/ext/puma_http11</a>
+</small></p>
 </section>
 <section id="ragel-in-c" class="slide">
+<p><br><br></p>
 <h2>Ragel in C</h2><p>It&#39;s also possible to prototype in Ruby, then convert it to a C module for super speed. Ragel supports several output formats so you can do this port rather easily.</p>
 <p>Again, see mongrel or puma for ideas.</p>
 </section>
-<section id="ragel-directives" class="slide">
-<h2>Ragel Directives</h2><p>There are three main directives that do the bulk of the work.</p>
-<p>  %%write init;    (initializes the data buffer and sets the current state)</p>
-<p>  %%write data;    (writes out definitions of the state and transition data)</p>
-<p>  %%write exec;    (writes out the code that processes the data buffer using the state and transition data)</p>
+<section id="ragel-directives-init" class="slide">
+<p><br><br></p>
+<h2>Ragel Directives - init</h2><p>Initializes the data buffer and sets the current state:</p>
+<pre><code><span class="hljs-tag">  %<span class="hljs-title">write</span></span> init;
+</code></pre>
+</section>
+<section id="ragel-directives-data" class="slide">
+<p><br><br></p>
+<h2>Ragel Directives - data</h2><p>Writes out definitions of the state and transition data:</p>
+<pre><code>  %%<span class="hljs-built_in">write</span> <span class="hljs-type">data</span>;
+</code></pre>
+</section>
+<section id="ragel-directives-exec" class="slide">
+<p><br><br></p>
+<h2>Ragel Directives - exec</h2><p>Writes out the code that processes the data buffer using the state and transition data</p>
+<pre><code><span class="xml"></span><span class="perl">  <span class="hljs-variable">%%</span><span class="hljs-keyword">write</span> <span class="hljs-keyword">exec</span>;</span><span class="xml"></span>
+</code></pre>
 </section>
 <section id="write-data" class="slide">
 <h2>%%write data;</h2><pre><code>  <span class="hljs-class"><span class="hljs-keyword">class</span> <span class="hljs-inheritance">&lt;</span><span class="hljs-inheritance">&lt; <span class="hljs-parent">self</span></span></span>
@@ -1068,6 +1116,7 @@ and cpu-cache friendly.</p>
 </code></pre>
 </section>
 <section id="write-init" class="slide">
+<p><br></p>
 <h2>%%write init;</h2><pre><code>  <span class="hljs-operator"><span class="hljs-keyword">begin</span>
     <span class="hljs-keyword">p</span> ||= <span class="hljs-number">0</span>
     pe ||= <span class="hljs-keyword">data</span>.<span class="hljs-keyword">length</span>
@@ -1113,6 +1162,7 @@ and cpu-cache friendly.</p>
 </code></pre>
 </section>
 <section id="calling-from-ruby" class="slide">
+<p><br></p>
 <h2>Calling From Ruby</h2><p>To run on a single buffer of String data:</p>
 <pre><code>   def ragel_parse(<span class="hljs-type">data</span>)
      <span class="hljs-type">data</span> = <span class="hljs-type">data</span>.<span class="hljs-built_in">unpack</span>(<span class="hljs-string">"c*"</span>)
@@ -1127,12 +1177,14 @@ and cpu-cache friendly.</p>
 </code></pre>
 </section>
 <section id="ragel-playground" class="slide" data-has-notes="true">
+<p><br></p>
 <h2>Ragel Playground</h2><p>I created a tool in Volt to do some basic visualization.</p>
 <p><a href="https://github.com/ijcd/ragel_playground">https://github.com/ijcd/ragel_playground</a></p>
 <p>It&#39;s definitely a work in progress, but feel free to try it out.</p><aside class="notes"><p>Volt is very cool, by the way. You can do reactive programming without ever stepping out of Ruby. Give it a try if you haven&#39;t already.</p></aside>
 </section>
 <section id="demos" class="slide" data-has-notes="true">
-<h2>Demos</h2><ol>
+<p><br></p>
+<h1>Demos</h1><ol>
 <li>hello parser</li>
 <li>args parser</li>
 <li>args state chart</li>
@@ -1149,11 +1201,7 @@ going on (data jump tables, start/end states, execution code)</p>
 <p>github.com/ijcd</p>
 <p><a href="https://github.com/ijcd/ragel_playground">https://github.com/ijcd/ragel_playground</a></p>
 <p><a href="https://github.com/ijcd/rubyconf-2015-ragel">https://github.com/ijcd/rubyconf-2015-ragel</a></p>
-</section>
-<section id="talk-to-me-baby" class="slide">
-<h1>Talk to me, baby!</h1><p>@ijcd</p>
-<p>github.com/ijcd</p>
-<p>github.com/ijcd/ragelpen (lib/examples)</p>
+<p><a href="http://www.colm.net/open-source/ragel/">http://www.colm.net/open-source/ragel/</a></p>
 </section>
 <section>
 
@@ -1185,7 +1233,7 @@ going on (data jump tables, start/end states, execution code)</p>
     });
     </script>
 
-    <script src="js/dynamic-theme.js"></script><script src="js/such-notes-print.js"></script><script src="js/custom.js"></script>
+    <script src="js/dynamic-theme.js"></script><script src="js/custom.js"></script>
 
   </body>
 </html>

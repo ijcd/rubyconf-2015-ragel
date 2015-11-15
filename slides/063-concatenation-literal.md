@@ -1,6 +1,6 @@
 # Concatenation Literal
 
-Both of these produce a match on a sequence of letters.
+Match on a sequence of letters.
 
 ```
 %%{

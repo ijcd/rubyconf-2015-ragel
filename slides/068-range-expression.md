@@ -1,6 +1,6 @@
 # Range Expression
 
-Matches 
+Matches any character between 'a' and 'z' inclusive.
 
 ```
 %%{

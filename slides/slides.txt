@@ -84,7 +84,8 @@ Boofus likes being cozy.
 ![](images/minnie_hoodie.jpg)
 
 Note:
-
+slide 10
+3 minutes
 ---
 ## And Relaxed
 
@@ -172,19 +173,31 @@ Note:
 Ragel excels at ripping-fast parsing and processing of textual data.
 
 ---
+<br>
 ## Ruby projects using Ragel
 
 * Mongrel, Unicorn, Puma
-* Whitequark 
+* Whitequark
 * Mail
 * RedCloth
 * Hpricot
 * Gherkin
 
+https://github.com/whitequark/parser/blob/master/lib/parser/lexer.rl
+
+Note:
+If you need more examples after this talk, these are good projects to look at.
+
+Note:
+slide 20
+6 minutes
+
 ---
-# What Does Ragel Look Like
+<br>
+## What Does Ragel Look Like?
 
 ```
+%%{
 action dgt      { printf("DGT: %c\n", fc); }
 action dec      { printf("DEC: .\n"); }
 action exp      { printf("EXP: %c\n", fc); }
@@ -197,30 +210,11 @@ number = (
 ) %number;
 
 main := ( number '\n' )*;
+}%%
 ```
-
 
 ---
 ## But Regular Expressions are easy!
-
-zarro boogs found
-
-![](images/regular_expression.jpg)
-
-Note:
-
-What's that you say? Parsing text?
-
-Parsing text is easy.
-
-You just use regular expressions, right?
-
-Simple. No problem.
-
-They have their place, but you can reach for something better.
-
----
-## Regular Expressions
 
 Regular expressions consist of constants and operator symbols that denote sets of strings and operations over these sets, respectively. (from Wikipedia)
 
@@ -252,6 +246,25 @@ You can get by with them. You can especially get by with them in Ruby which draw
   end
 end
 ```
+
+---
+## Irregular Expressions
+
+zarro boogs found
+
+![](images/regular_expression.jpg)
+
+Note:
+
+What's that you say? Parsing text?
+
+Parsing text is easy.
+
+You just use regular expressions, right?
+
+Simple. No problem.
+
+They have their place, but you can reach for something better.
 
 ---
 ## Sometimes You Want More Control
@@ -307,6 +320,10 @@ State machines are an important tool in computer programming, and Ragel is a won
 
 <br>
 ![](images/stoplight.gif)
+
+Note:
+slide 30
+9 minutes
 
 ---
 ## They run your CPU
@@ -398,6 +415,10 @@ Computer science.
   'a', 'a'*, 'a'+
 
 ![](images/simple_machines.png)
+
+Note:
+slide 40
+12 minutes
 
 ---
 # More Complex
@@ -613,6 +634,12 @@ You can include and import definitions from other files.
 These can help you keep things organized. See the manual for the specific semantics of each.
 
 ---
+<br>
+# Whitespace
+
+  Any amount of whitespace can separate tokens.
+
+---
 # Comments
 
 ```
@@ -650,11 +677,13 @@ You can escape the end of a line with a \ (as in shell scripting)
 ---
 # Host Language Code
 
-Braces are used to delimit host language code in %%{ }%% sections
+Braces are used to delimit host language code
 
 
 ```
+%%{
    { puts "I am ruby" }    
+}%%
 ```  
 
 ---
@@ -672,7 +701,8 @@ Integers and hexadecimals can be used to refer to numbers.
 
 ```
     access
-    actionalphtype
+    action
+    alphtype
     getkey
     write
     machine
@@ -680,15 +710,9 @@ Integers and hexadecimals can be used to refer to numbers.
 ```    
 
 ---
-<br>
-# Whitespace
-
-  Any amount of whitespace can separate tokens.
-
----
 # Concatenation Literal
 
-Both of these produce a match on a sequence of letters.
+Match on a sequence of letters.
 
 ```
 %%{
@@ -760,7 +784,7 @@ How many turtles do you need?
 ---
 # Range Expression
 
-Matches 
+Matches any character between 'a' and 'z' inclusive.
 
 ```
 %%{
@@ -889,7 +913,7 @@ Nondeterminism. If there are strings, or prefixes of strings that are
 matched by both machines then the new machine will follow both parts
 of the alternation at once. The union operation is shown below.
 
---
+---
 # Union Example
 
 ```
@@ -1124,6 +1148,7 @@ any* - expr
 ![](images/kleene_star_example.png)
   
 ---
+<br>
 ## Character- Level Negation
 
 ```
@@ -1239,6 +1264,7 @@ See the manual for more information on these.
 * Local Error Actions  (for error recovery)
 
 ---
+<br>
 # Nondeterminism
 
 One of the problems you will run into is when the trailing match of
@@ -1265,6 +1291,7 @@ lines = line*;
 ```
 
 ---
+<br>
 # Ambiguity Problems
 
 Here's an incorrect way to parse C language comments:
@@ -1344,6 +1371,10 @@ comment = ’/*’ ( any @comm )* :>> ’*/’;
 
 This is much simpler to visualize and reason about.
 
+Note:
+
+As soon as we hit a '*/' while in the comment, we will match and exit the comment.
+
 ---
 <br>
 ## Entry-Guarded Concatenation
@@ -1365,6 +1396,10 @@ Equivalent to:
 expr $(unique_name,0) . expr >(unique_name,1)
 ```
 
+Note:
+
+As soon as we hit an 'F', we will leave the first machine an start matching the second.
+
 ---
 <br>
 ## Left-Guarded Concatenation
@@ -1381,11 +1416,14 @@ For stripping leading space:
 main := ( ’ ’* >start %fin ) <: ( ’ ’ $ws | [a-z] $alpha )*;
 ```
 
+Note:
+This allows the left machine to greedily eat any spaces. The second machine won't match a space until it is already being matched, having had a letter appear already.
+
 ---
 <br>
 ## Longest-Match Kleene Star
 
-This has a higher priority for staying in the machine rather than wrapping aroudn again.
+This has a higher priority for staying in the machine rather than wrapping around again.
 
 ```
 expr**
@@ -1424,6 +1462,7 @@ With a Ragel-based scanner the user need not wait until the end of a pattern bef
 Scanners can be used to process sub-languages, as well as for tokenizing programming languages.
 
 ---
+<br>
 ## Scanner Example
 
 Tokenizing the contents of a header field.
@@ -1441,7 +1480,7 @@ Tokenizing the contents of a header field.
 }%%
 ```
 
---
+---
 # Protocol Parsing
 
 Ragel is well suited for protocol parsing.
@@ -1450,15 +1489,18 @@ Mapping an RFC onto a Ragel specification is pretty straight-forward.
 
 Puma has a good example of this (heritage is the original mongrel parser by Zed Shaw)
 
+<small>
 https://github.com/puma/puma/blob/master/ext/puma_http11/http11_parser_common.rl
+</small>
 
 
 ---
+<br>
 # State Charts
 
 Ragel allows you to specify states and transitions directly if you desire extreme customization.
 
-This is like programming in the "assumbly" of Ragel.
+This is like programming in the "assembly" of Ragel.
 
 There are a few new operators for this.
 
@@ -1511,13 +1553,17 @@ two: (
     main := headers*;
 ```
 
+Note:
+
+You can use fcall and fret to jump around in the parser, like function calls.
+
 ---
 <br>
 ## Parsing Recursive Structures
 
 The general trick is to store some context about where you are in your
 recursive structure, say in a stack called @nestings, and push/pop to
-it as appropriate. When it comes time to fret, you can examine your
+it as appropriate. When it comes time to call `fret`, you can examine your
 @nestings and steer the parser as deemed appropriate.
 
 ---
@@ -1531,36 +1577,43 @@ This is possible. The trick here is to match deeper than you need, then use `fho
 
 Ragel uses several variables for state. You can twiddle them in actions.
 
+```
 * data - the buffer where you should store the data
 * p    - start index in data where Ragel is matching
 * pe   - end index of data (Ragel should ignore anything past this)
 * ts   - in a scanner, token start
 * te   - in a scanner, token end
 * act  - in a scanner, last matched action
+```
 
 Those are the major ones. See the manual for more details.
 
 ---
+<br>
 ## Ragel Operation (roughly)
 
-1) starts in state 0
-2) characters move it through a state
-3) it consumes p -> pe from data
-4) if cs is >= first_final_state (final states are last) then you have “admitted” the string
+1. Starts in state 0
+1. Feed it data, updating `p` and `pe` as appropriate
+1. Run the `%%exec` loop
+1. Characters move it through a state
+1. It consumes `p -> pe` from `data`
+1. If `cs` is `>= first_final_state` (final states are last) then you have “admitted” the string
 
 ---
+<br>
 ## Ragel Operation (scanners)
 
 Scanners are a bit more involved, but not that much more.
 
-1) use a stack to track states
-2) use ts -> te to track where they are in a match
-3) use the stack to backtrack when necessary
-4) keep matching repeatedly until we are done
-5) longest match wins
-6) it's useful to create helper methods (emit, current_buffer, current_match(start, end))
+1. Use a stack to track states
+1. Use ts -> te to track where they are in a match
+1. Use the stack to backtrack when necessary
+1. Keep matching repeatedly until we are done
+1. Longest match wins
+1. It's useful to create helper methods (`emit`, `current_buffer`, `current_match(start, end)`)
 
 ---
+<br>
 ## Ragel String Extraction
 
 To pull out the data you care about, while you are parsing, you will do something like this:
@@ -1577,13 +1630,13 @@ Several host languages are available.
 
 ```
     host language:
-       -C                   The host language is C, C++, Obj-C or Obj-C++ (default)
-       -D                   The host language is D
-       -Z                   The host language is Go
-       -J                   The host language is Java
-       -R                   The host language is Ruby
-       -A                   The host language is C#
-       -O                   The host language is OCaml
+       -C    The host language is C, C++, Obj-C or Obj-C++ (default)
+       -D    The host language is D
+       -Z    The host language is Go
+       -J    The host language is Java
+       -R    The host language is Ruby
+       -A    The host language is C#
+       -O    The host language is OCaml
 ```
 
 ---
@@ -1610,6 +1663,7 @@ Ragel uses your .rl code to compute the set of states and transitions. From that
 ```
 
 ---
+<br><br>
 ## Code Styles Performance
 
 Each of these has different visual organization and performance
@@ -1619,13 +1673,17 @@ and cpu-cache friendly.
 
 
 ---
+<br>
 ## Multi-Language
 
 It's possible to have a single Ragel definition that uses import semantics to allow implementing the actions in different languages using the same parent Ragel file. See the http11 parser in puma for details (C and Java)
 
+<small>
 https://github.com/puma/puma/tree/master/ext/puma_http11
+</small>
 
 ---
+<br><br>
 ## Ragel in C
 
 It's also possible to prototype in Ruby, then convert it to a C module for super speed. Ragel supports several output formats so you can do this port rather easily.
@@ -1634,15 +1692,33 @@ Again, see mongrel or puma for ideas.
 
 
 ---
-## Ragel Directives
+<br><br>
+## Ragel Directives - init
 
-There are three main directives that do the bulk of the work.
+Initializes the data buffer and sets the current state:
 
-  %%write init;    (initializes the data buffer and sets the current state)
+```
+  %write init;
+```
+    
+---
+<br><br>
+## Ragel Directives - data
 
-  %%write data;    (writes out definitions of the state and transition data)
+Writes out definitions of the state and transition data:
+```
+  %%write data;
+```
 
-  %%write exec;    (writes out the code that processes the data buffer using the state and transition data)
+---
+<br><br>
+## Ragel Directives - exec
+
+Writes out the code that processes the data buffer using the state and transition data
+
+```
+  %%write exec;
+```
 
 ---
 ## %%write data;
@@ -1669,6 +1745,7 @@ There are three main directives that do the bulk of the work.
 ```
 
 ---
+<br>
 ## %%write init;
 
 ```
@@ -1731,6 +1808,7 @@ You can get a dotviz graph.
 ```
 
 ---
+<br>
 ## Calling From Ruby
 
 To run on a single buffer of String data:
@@ -1749,6 +1827,7 @@ To run on a single buffer of String data:
 ```
 
 ---
+<br>
 ## Ragel Playground
 
 I created a tool in Volt to do some basic visualization.
@@ -1761,7 +1840,8 @@ Note:
 Volt is very cool, by the way. You can do reactive programming without ever stepping out of Ruby. Give it a try if you haven't already.
 
 ---
-## Demos
+<br>
+# Demos
 
 1. hello parser
 1. args parser
@@ -1792,3 +1872,5 @@ github.com/ijcd
 https://github.com/ijcd/ragel_playground
 
 https://github.com/ijcd/rubyconf-2015-ragel
+
+http://www.colm.net/open-source/ragel/

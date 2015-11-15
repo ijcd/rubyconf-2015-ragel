@@ -1,6 +1,8 @@
-# What Does Ragel Look Like
+<br>
+## What Does Ragel Look Like?
 
 ```
+%%{
 action dgt      { printf("DGT: %c\n", fc); }
 action dec      { printf("DEC: .\n"); }
 action exp      { printf("EXP: %c\n", fc); }
@@ -13,6 +15,6 @@ number = (
 ) %number;
 
 main := ( number '\n' )*;
+}%%
 ```
-
 
